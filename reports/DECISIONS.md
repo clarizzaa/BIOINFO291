@@ -48,8 +48,10 @@ Note:         No single gene survives BH correction across 41,744 genes at
               patient level (minimum padj 0.122) although the rank test's
               floor at n = 10 vs 18 is 1.5e-7, so this is a real absence of
               single-gene signal rather than a resolution limit. The
-              aggregate 25-gene score still separates the groups at AUC 0.88:
-              the response signal is distributed, not concentrated.
+              aggregate score still separates the groups at AUC 0.88 (25 genes
+              per direction, re-derived within each fold; the fixed signature
+              reported here is 20 per direction): the response signal is
+              distributed across many genes, not concentrated in any one.
 Affects:      configs/scrnaseq.yaml (pseudobulk_de.*, benchmark_signature.*),
               workflows/06_pseudobulk_de.py, results/signature_auc.csv,
               results/signature_genes.json, figures/signature_auc.png

@@ -84,6 +84,18 @@ def test_every_raw_file_is_registered():
             f"{f.name} has no SHA-256 in SOURCES.md"
 
 
+def test_sources_has_no_duplicate_rows():
+    """Re-running step 00 must refresh rows, not append them again."""
+    text = (paths().metadata / "SOURCES.md").read_text()
+    names = [
+        ln.split("|")[1].strip().strip("`")
+        for ln in text.splitlines()
+        if ln.startswith("|") and "---" not in ln and not ln.startswith("| File |")
+    ]
+    dupes = {n for n in names if names.count(n) > 1}
+    assert not dupes, f"SOURCES.md has duplicate rows for {dupes}"
+
+
 def test_raw_data_is_read_only():
     P = paths()
     files = [f for f in P.raw.glob("*.gz")]

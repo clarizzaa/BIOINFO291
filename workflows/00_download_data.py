@@ -72,7 +72,10 @@ def register(sources_md: Path, rows: dict[str, tuple[str, str, str, str]]) -> No
     for ln in lines[sep_i + 1:]:
         if not ln.startswith("|"):
             continue
-        key = ln.split("|")[1].strip()
+        # Filenames are written inside backticks; strip them so the key
+        # matches the plain filename used below. Without this the lookup
+        # misses on a rerun and every row is appended a second time.
+        key = ln.split("|")[1].strip().strip("`")
         if key.startswith("_("):  # the "(none yet)" placeholder
             continue
         existing[key] = ln

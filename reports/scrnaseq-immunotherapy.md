@@ -51,9 +51,9 @@ Checked before the composition results were read:
 
 | variable | test | p | detail |
 |---|---|---|---|
-| therapy | chi-square | 0.0653 | anti-CTLA4: 1/1; anti-CTLA4+PD1: 4/7; anti-PD1: 26/9 |
-| timepoint | chi-square | 0.2745 | Post: 21/8; Pre: 10/9 |
-| sort_fractions | chi-square | 0.1448 | T_enriched+unsorted: 5/2; myeloid_enriched+unsorted: 0/2; unsorted: 26/13 |
+| therapy | chi-square | 0.0653 | anti-CTLA4: 1 Non-responder, 1 Responder; anti-CTLA4+PD1: 4 Non-responder, 7 Responder; anti-PD1: 26 Non-responder, 9 Responder |
+| timepoint | chi-square | 0.2745 | Post: 21 Non-responder, 8 Responder; Pre: 10 Non-responder, 9 Responder |
+| sort_fractions | chi-square | 0.1448 | T_enriched+unsorted: 5 Non-responder, 2 Responder; myeloid_enriched+unsorted: 0 Non-responder, 2 Responder; unsorted: 26 Non-responder, 13 Responder |
 | n_cells_per_biopsy | Mann-Whitney | 0.1884 | median Responder 333 vs Non-responder 349 |
 | biopsies_per_patient | none (structural) | nan | 32 patients; 1 biopsies: 19 patients; 2 biopsies: 10 patients; 3 biopsies: 3 patients |
 
