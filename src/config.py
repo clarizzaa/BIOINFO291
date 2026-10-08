@@ -89,6 +89,23 @@ def load_config(name: str = "scrnaseq") -> dict:
     return cfg
 
 
+def prepare_runtime() -> None:
+    """Set process-level defaults that must be in place *before* scanpy loads.
+
+    Call this at the top of any step that imports scanpy, ahead of the import.
+
+    numba compiles scanpy's aggregation kernels on first use and tries to cache
+    the result next to the installed package. Where site-packages is read-only
+    (a shared or containerised conda install) that raises at import time, so
+    the cache is redirected into the repository. matplotlib is pinned to the
+    non-interactive backend so figures render identically with no display.
+    """
+    root = repo_root()
+    os.environ.setdefault("NUMBA_CACHE_DIR", str(root / ".cache" / "numba"))
+    Path(os.environ["NUMBA_CACHE_DIR"]).mkdir(parents=True, exist_ok=True)
+    os.environ.setdefault("MPLBACKEND", "Agg")
+
+
 def set_seed(seed: int) -> int:
     """Seed every RNG a workflow step can reach, and return the seed used.
 

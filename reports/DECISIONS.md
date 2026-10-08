@@ -24,6 +24,30 @@ Reason:       Single-cell matrices are too large for a git repository, and a
               git-lfs adds a dependency the grader would also need.
 Affects:      .gitignore, data/metadata/SOURCES.md
 
+## 2026-10-08  QC thresholds, and mitochondrial content computed in TPM space
+Decision:     Remove cells with >=40% mitochondrial TPM and genes detected in
+              fewer than 3 cells. Do not apply a minimum-genes-per-cell
+              filter. Compute mitochondrial fraction after converting the
+              matrix back to linear TPM (2**x - 1), not on the log values.
+Alternatives: The common defaults of 5-20% mitochondrial content and
+              `min_genes=200`; using `sc.pp.calculate_qc_metrics` directly.
+Reason:       The authors released an already-curated CD45+ set with their own
+              per-cell quality filters applied, so the observed minimum is
+              ~1,000 genes per cell and a 200-gene floor removes nothing; it
+              is reported in the QC figure for inspection instead. A 5%
+              mitochondrial cutoff is tuned to droplet data and would discard
+              most of a Smart-seq2 experiment, whose median here is 12.7%.
+              Scanpy's default metrics assume raw counts; a percentage taken
+              over log2(TPM+1) values is not a fraction of transcripts, so the
+              values are de-logged first.
+              Result: 231 cells removed (16,291 -> 16,060) and 10,045 genes
+              removed (55,737 -> 45,692), matching the reference example.
+              Loss is marginally uneven across groups (1.6% of non-responder
+              vs 1.1% of responder cells, Fisher p = 0.005), which is stated
+              on the figure rather than described as balanced.
+Affects:      configs/scrnaseq.yaml (qc.*), workflows/02_qc.py,
+              results/qc_counts.csv, figures/qc_metrics.png
+
 ## 2026-10-08  FACS sorting fraction recovered and kept as a covariate
 Decision:     Parse the second header row of the TPM matrix and record a
               `sort_fraction` column (`unsorted`, `T_enriched`,

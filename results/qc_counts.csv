@@ -1,0 +1,4 @@
+stage,n_cells,n_genes,note,cells_removed,genes_removed
+00_loaded,16291,55737,as released by the authors,0,0
+01_mito_filter,16060,55737,removed 231 cells with >=40% mito TPM,231,0
+02_gene_filter,16060,45692,removed 10045 genes in <3 cells,0,10045
