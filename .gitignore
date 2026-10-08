@@ -1,0 +1,40 @@
+# ---- Data -------------------------------------------------------------
+# Raw data is NOT tracked: it is large, and it is reproducible from the
+# source URL + checksum recorded in data/metadata/SOURCES.md.
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/README.md
+
+# Processed data is NOT tracked: workflows regenerate it from raw.
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/README.md
+
+# Large binary results are not tracked; small text tables are.
+results/*.h5ad
+results/*.h5
+results/*.rds
+results/*.pkl
+
+# ---- Python -----------------------------------------------------------
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# ---- Caches written by agent tooling ----------------------------------
+.numba_cache/
+.mpl/
+.cache/
+
+# ---- OS / editor ------------------------------------------------------
+.DS_Store
+.vscode/
+.idea/
+
+# ---- Secrets ----------------------------------------------------------
+.env
+*.pem
+*_token
