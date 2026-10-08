@@ -24,6 +24,28 @@ Reason:       Single-cell matrices are too large for a git repository, and a
               git-lfs adds a dependency the grader would also need.
 Affects:      .gitignore, data/metadata/SOURCES.md
 
+## 2026-10-08  FACS sorting fraction recovered and kept as a covariate
+Decision:     Parse the second header row of the TPM matrix and record a
+              `sort_fraction` column (`unsorted`, `T_enriched`,
+              `myeloid_enriched`) on every cell, rather than taking biopsy
+              labels from the annotation file alone.
+Alternatives: Use the annotation file only, as the reference example does;
+              or drop the 991 cells from sorted fractions outright.
+Reason:       The two released files disagree for 991 cells. The expression
+              matrix records that nine Post biopsies were FACS-sorted into
+              T-cell- or myeloid-enriched fractions; the annotation file
+              collapses that away. Cell-type proportions within a sorted
+              fraction reflect the sorting gate, not the tumour, so this is a
+              direct confounder of the central composition comparison, and it
+              is not balanced across groups: myeloid-enriched fractions occur
+              only in responders (2 biopsies, 118 cells) while T-enriched
+              fractions are mostly non-responders (5 vs 2 biopsies).
+              Discarding the cells would lose data and still leave the
+              imbalance unexamined; keeping the label permits an explicit
+              confounding check and a sensitivity analysis.
+Affects:      workflows/01_build_anndata.py, workflows/05_composition.py,
+              results/cohort_summary.csv, results/confounding_check.csv
+
 ## 2026-10-07  One rules file, several entry points
 Decision:     WORKSPACE.md holds the rules; AGENTS.md and CLAUDE.md point to
               it; the Claude Science project-context text also points to it and

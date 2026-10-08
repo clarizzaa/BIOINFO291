@@ -8,4 +8,6 @@ Checksums are produced with:
 
 | File | Source (URL / accession) | Obtained | SHA-256 | Notes |
 |---|---|---|---|---|
-| _(none yet)_ | | | | |
+| `GSE120575_Sade_Feldman_melanoma_single_cells_TPM_GEO.txt.gz` | [GSE120575](https://ftp.ncbi.nlm.nih.gov/geo/series/GSE120nnn/GSE120575/suppl/GSE120575_Sade_Feldman_melanoma_single_cells_TPM_GEO.txt.gz) | 2026-10-08 | `43fa3d50acd151be89aa8e94ac83cc730dbbf7623473339c5534b77c16d48e3f` | log2(TPM+1) matrix, genes x cells, as released by the authors |
+| `GSE120575_patient_ID_single_cells.txt.gz` | [GSE120575](https://ftp.ncbi.nlm.nih.gov/geo/series/GSE120nnn/GSE120575/suppl/GSE120575_patient_ID_single_cells.txt.gz) | 2026-10-08 | `6a228029df713006fb465f02cc3e1e17540b0ddaf4b69374b116aeb135cdf73f` | per-cell sample, patient, timepoint, therapy and response labels |
+
