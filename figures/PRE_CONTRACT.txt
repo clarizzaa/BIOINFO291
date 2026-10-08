@@ -1,0 +1,24 @@
+# Figures that predate docs/figure-contract.md.
+#
+# These were produced in week 1, before the contract and the sidecar existed.
+# They are exempt from the sidecar requirement in
+# tests/test_figure_contract.py, and from nothing else.
+#
+# The exemption is a list rather than a date cutoff so that it cannot grow by
+# accident: a new figure is checked unless someone adds its name here, in a
+# commit, on purpose. Nothing may be added to this list after 2026-10-08.
+#
+# These figures were reviewed retrospectively against the contract anyway;
+# the verdicts are in reports/figure_reviews/week1/ and summarized in
+# reports/week1_figure_review.md. They were deliberately not fixed - see
+# reports/DECISIONS.md.
+
+composition_barplots.png
+composition_boxplots.png
+marker_dotplot.png
+marker_heatmap.png
+qc_metrics.png
+signature_auc.png
+signature_scores.png
+umap_celltypes.png
+umap_clusters.png
