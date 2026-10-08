@@ -38,3 +38,9 @@ __pycache__/
 .env
 *.pem
 *_token
+
+# Stray preview images written by interactive viewers
+_view_*.png
+
+# Derived from agents/figure-reviewer/AGENT.md; regenerate, do not edit
+agents/figure-reviewer/_prompt.txt
