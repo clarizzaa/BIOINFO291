@@ -1,0 +1,70 @@
+{
+  "figure": "growth_ratio.png",
+  "round": 1,
+  "verdict": "revise",
+  "findings": [
+    {
+      "rule": "C10",
+      "promise": "Evidence",
+      "severity": "major",
+      "observed": "Each panel carries a coloured annotation in the bold line's own colour - \"day 21: 3.9×\", \"5.4×\", \"6.8×\", \"5.9×\" - but those values are not where the bold line is. Measured off the pixels (69.4 px per log2 unit, calibrated against the dashed 0 line at row 477.5 vs 478 predicted), the bold line at day 21 sits at log2 2.02 / 2.30 / 2.68 / 2.53, i.e. 4.05× / 4.91× / 6.41× / 5.78×. The gap changes sign across panels (-4%, +10%, +6%, +2%), so it is a second statistic and not a reading error; and diet 1's annotated 3.9× is below the geometric mean 4.05×, which rules out an arithmetic mean of ratios. The only summary named anywhere on the figure is the caption's \"the bold line is the mean log2 ratio over the chicks measured on that day\", which is not the annotated number; the word \"median\" appears only in the suptitle. A reader cannot tell what statistic the coloured number is.",
+      "fix": "Name the statistic in the annotation. Line 143 of workflows/23_fig_growth_ratio.py computes `med_by_diet = df[df[time] == final_day].groupby(group)[\"ratio\"].median()`, and line 155 prints it as `f\"day {final_day}: {med:.1f}\\u00d7\"`. Change line 155 to `f\"day {final_day} median: {med:.1f}\\u00d7\"` (and, if the annotation keeps the line's colour, add to the `mean_line` caption string at line 199 that the bold line is the mean while the annotation is the median).",
+      "script_only": false
+    },
+    {
+      "rule": "sidecar:axes.y.limits",
+      "promise": "Magnitude",
+      "severity": "major",
+      "observed": "The sidecar declares the y axis `limits` as [-0.15611920191728185, 3.185479815637154]. The drawn axis runs -1 to 4: y ticks are at rows 200/269/339/408/478/547 labelled 4 (16×) / 3 (8×) / 2 (4×) / 1 (2×) / 0 (1×) / -1 (0.5×), and the panel spines span rows 199-548 - the bottom spine lands on the -1 tick and the top on the 4 tick, in all four panels. So the declared pair is the data range, not the axis, and about a third of the panel height (0.84 log2 below the lowest datum, 0.81 above the highest) holds no data. A reader using the sidecar to check whether the magnitude channel was truncated or padded is told something the drawing contradicts.",
+      "fix": "Report the realised axis, not the data range. Line 238 of workflows/23_fig_growth_ratio.py is `\"limits\": [float(df[\"log2_ratio\"].min()), float(df[\"log2_ratio\"].max())]`; replace it with `[float(v) for v in axes[0].get_ylim()]`. The same substitution applies to the x entry two blocks above (`[int(df[time].min()), int(df[time].max())]` -> `axes[0].get_xlim()`). Both are already evaluated after the `set_yticks` call at line 168 that widens the shared view to the integer ticks -1..4, so the realised limits are available at that point.",
+      "script_only": false
+    },
+    {
+      "rule": "A7",
+      "promise": "Legibility",
+      "severity": "minor",
+      "observed": "\"Time (days since hatch)\" is printed under all four panels. Measured, the four text blocks are separated by only 19-21 px, so the strip under the figure reads as one run-on: \"Time (days since hatch) Time (days since hatch) Time (days since hatch) Time (days since hatch)\".",
+      "fix": "Label the axis once. Line 184 sets `ax.set_xlabel(f\"Time ({ds['time_units']})\")` inside `for ax in axes:`; move that one statement out of the loop onto `axes[0]`, or replace it with a single `fig.supxlabel(f\"Time ({ds['time_units']})\")`, leaving the `set_xticks` call at line 185 in the loop.",
+      "script_only": false
+    },
+    {
+      "rule": "A8",
+      "promise": "Legibility",
+      "severity": "minor",
+      "observed": "The caption is a concatenation of sidecar field values, so two sentences open with a bare value and no field name: \"no interval is drawn.\" and \"nothing: all 50 chicks and all 578 measurements are drawn\". The second momentarily reads as if nothing were drawn.",
+      "fix": "Make the `\"excluded\"` value self-labelling: line 254 opens it `f\"nothing: all {len(all_units)} chicks \"`; change that opening to \"Excluded: nothing - all {len(all_units)} chicks ...\" so the concatenated caption keeps the field name attached to the value.",
+      "script_only": false
+    }
+  ],
+  "rules_passed": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C11",
+    "C12",
+    "A1",
+    "A2",
+    "A3",
+    "A4"
+  ],
+  "sidecar_consistency": [
+    {
+      "field": "axes.y.limits",
+      "declared": "[-0.15611920191728185, 3.185479815637154]",
+      "observed": "drawn axis -1 to 4 in all four panels (ticks -1,0,1,2,3,4; bottom spine on the -1 tick at row 547, top spine on the 4 tick at row 200)"
+    },
+    {
+      "field": "axes.x.limits",
+      "declared": "[0, 21]",
+      "observed": "drawn axis approx -1.1 to 22.0 days (tick 0 at x=459, tick 20 at x=831, 18.6 px/day, spine 439-869); the data do span 0-21, so this is the default margin and immaterial, but the field again reports the data range rather than the axis"
+    }
+  ],
+  "title_overstates": false,
+  "notes": "Both numbers in the C10 finding are true summaries of the data - the annotation is the median of day-21 ratios, the line is the mean of log2 ratios - and the diet ordering is the same either way (1 < 2 < 4 < 3), so nothing is distorted and the finding is major, not blocking. What fails is that neither the annotated statistic nor its difference from the drawn line is named on the figure.\n\nChecks that passed, with what was measured. C2: all four axes are 431 px wide with identical y tick rows and identical x tick offsets (+20/+94/+169/+243/+318/+392 px from each spine), y tick labels once on the left, exactly as `shared_scales` declares. C6: the palette measured out of the pixels is #0072B2 / #E69F00 / #009E73 / #CC79A7 (Okabe-Ito), and diet is also carried by panel position and panel title, so the figure survives grayscale. C10's no-interval declaration is true: intermediate-tint pixel counts are 1039/1242/1042/744 per panel, consistent with antialiasing of a thick line and nothing else - panel 4's bold line looks widest because its chick lines hug it, not because a band is drawn. C5: the 0 reference is dashed in every panel (70% ink coverage on that row in each) and dual-labelled with the ratio. C8/C11: panel titles give chick counts at day 0 and day 21 (20/16, 10/10, 10/10, 10/9) and the caption gives the differential loss per diet. The title's \"1.8-9.1×\" is verifiable in the drawing: the lowest day-21 chick line reads 1.78× (diet 2) and the highest 9.13× (diet 3).\n\nC12 passes deliberately. The title is three measured statements with no causal or effect language. The 39-43 g day-0 range cannot be seen in the figure because the normalisation removes it, but stating it is disclosure of context the transformation destroys, which is the right move, and the sidecar `normalisation_note` says so explicitly.\n\nTwo denominator remarks, neither a finding. The title's growth range and the per-diet medians are computed over the chicks measured at day 21 (45 of 50), not all 50; the per-panel day-21 counts are printed and sum to 45, so the denominator is recoverable from the figure. And the bold line's n falls along its length wherever follow-up was lost, with no visual break - disclosed in the caption, so C10/C11 are satisfied, but a reader following the diet-1 line is following 20 chicks at the left and 16 at the right.\n\nA5 and A6 were not applicable: no histogram, density or bandwidth, and no scatterplot. Overlap of chick lines is real - at day 8 only 11 separable grey runs are countable in a panel declaring 20 chicks - but the counts are printed in the panel titles, so a hidden trajectory is not confusable with an absent one (C4).\n\nNothing in this review was script_only: every finding was reachable from the image and the sidecar, which is what the contract asks of a self-describing figure. Pass 2 confirmed each one on a line - `.median()` feeding the annotation, `df[\"log2_ratio\"].min()/.max()` feeding the declared limits, the `set_xlabel` loop - and changed no verdict."
+}

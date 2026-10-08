@@ -1,0 +1,140 @@
+{
+  "figure": "final_weight_bad.png",
+  "round": 1,
+  "verdict": "blocked",
+  "findings": [
+    {
+      "rule": "C1",
+      "promise": "Magnitude",
+      "severity": "blocking",
+      "observed": "Bar chart with the y axis running 95-150; lowest tick label is 100 and no bar base is visible. Diet 1 (102.6) occupies ~7.5 axis units of ink and Diet 3 (143.0) ~48, a 6.3x difference in bar length for a 1.39x difference in weight. The 150 limit also clips Diet 3's upper whisker, which reaches 150.9, so its interval runs off the top of the panel.",
+      "fix": "Line 84, `ax.set_ylim(95, 150)`: delete it, or replace with `ax.set_ylim(0, None)`. Bars require a zero baseline (C1); A2's focused-range exemption covers points and lines only.",
+      "script_only": false
+    },
+    {
+      "rule": "C6",
+      "promise": "Meaning",
+      "severity": "blocking",
+      "observed": "Four bars in navy / cyan / yellow / dark red - the jet colormap, declared as `\"scale\": \"jet\"` in the sidecar - carrying an unordered 4-level category. The x axis has zero tick labels, so the legend is the only route from a bar to its diet; in grayscale or for a red-green deficient reader the navy and dark-red bars are not separable. Sidecar declares `redundant_with: null`, i.e. colour is admitted to be the sole channel.",
+      "fix": "Line 85, `ax.set_xticks([])`: replace with `ax.set_xticks(range(len(diets)))` plus `ax.set_xticklabels([f\"Diet {d}\" for d in diets])`, which makes colour redundant and lets the legend at line 88 be dropped. Separately, line 75's `plt.get_cmap(\"jet\")` should be a qualitative colourblind-safe palette (e.g. `plt.get_cmap(\"tab10\")`).",
+      "script_only": false
+    },
+    {
+      "rule": "C7",
+      "promise": "Evidence",
+      "severity": "blocking",
+      "observed": "Sidecar declares `experimental_unit: \"measurement\"` with n_per_group 220/120/120/118. The units are chicks: 20/10/10/10 per diet, 50 in total. Each bar therefore pools roughly 11-12 repeated weighings of the same animal as independent observations, and the bar heights (102.6/122.6/143.0/135.3) are means over every day of the experiment, not final weights - day-21 means are 177.8/214.7/270.3/238.6.",
+      "fix": "Lines 67-69: subset to the final day and aggregate to the chick before summarising - `d21 = df[df[ds['time']] == day]`, then group `d21` by `ds['group']`. `final_day` is already loaded at line 63 and never used.",
+      "script_only": false
+    },
+    {
+      "rule": "C8",
+      "promise": "Evidence",
+      "severity": "blocking",
+      "observed": "No n appears anywhere in the image - not on the axis, not in the legend, not in a panel annotation; the x axis carries no text at all. The only n a reader can reach is in the sidecar, and it is the measurement count (220/120/120/118) rather than the 20/10/10/10 chicks the groups actually contain.",
+      "fix": "At line 85, write the unit count into the tick labels - `ax.set_xticklabels([f\"Diet {d}\\nn={k}\" for d, k in zip(diets, chicks_per_diet)])` - where `chicks_per_diet` is the nunique chick count from the C7 fix.",
+      "script_only": false
+    },
+    {
+      "rule": "C9",
+      "promise": "Evidence",
+      "severity": "blocking",
+      "observed": "Each group holds 20, 10, 10 and 10 chicks, every one at or below the n<=25 threshold, and the panel draws exactly four marks plus four whiskers - zero individual observations. The distributions behind each bar are entirely concealed; at day 21 the within-diet SDs are large (diet 2 SE 24.7 on n=10).",
+      "fix": "After the bar call at line 78, overlay the per-chick values, e.g. `ax.scatter(jittered_x, d21_weights, s=12, color=\"black\", zorder=3, alpha=0.7)`, so each of the 45-50 chicks is drawn.",
+      "script_only": false
+    },
+    {
+      "rule": "C10",
+      "promise": "Evidence",
+      "severity": "blocking",
+      "observed": "Four black capped whiskers are drawn (half-widths 3.82, 6.54, 7.90, 6.34) with no definition anywhere in the image - no caption, no legend entry, no axis note. The sidecar says `\"error_bar\": \"standard error\"` but states no n, and the n behind it is the 578 measurements, which understates the chick-level day-21 SE by 2.3x to 3.8x (e.g. diet 1: 3.82 drawn against 14.68 actual).",
+      "fix": "At line 87, state it on the figure: `ax.set_title(..., loc=\"left\", fontsize=8)` or a figure caption reading \"mean +/- SE over chicks, n per diet shown on axis\". The definition must accompany the recomputed chick-level SE from the C7 fix; the sidecar's `\"error_bar\"` field at line 101 must also carry the n it was computed from.",
+      "script_only": false
+    },
+    {
+      "rule": "C11",
+      "promise": "Context",
+      "severity": "blocking",
+      "observed": "No counts of any kind on the figure. The sidecar asks \"Does final weight differ by diet?\" and declares `excluded: \"none\"` with `n_observations: 578` - every row in the dataset - so no final-timepoint selection took place at all, and the reader is given a pooled all-days mean under a final-weight question. Attrition is also real and unbalanced: 45 of 50 chicks reach day 21, with diet 1 losing 4 of 20 (20%) and diet 4 losing 1 of 10 (10%) while diets 2 and 3 lose none.",
+      "fix": "With the day-21 subset from the C7 fix, set the sidecar's `\"excluded\"` field at line 107 to the per-diet loss (4/20, 0/10, 0/10, 1/10) and print the same as entered-vs-displayed counts on the figure. The current `\"none\"` is a false declaration either way.",
+      "script_only": false
+    },
+    {
+      "rule": "C12",
+      "promise": "Claim",
+      "severity": "blocking",
+      "observed": "Title reads \"Diet 3 improves chick growth\". `improves` asserts a causal effect from an observational comparison of unrandomised diet groups; `growth` is asserted from a single weight summary with no rate or time axis in the panel. The ranking it names is not supported either: Diet 3 and Diet 4 intervals overlap as drawn (135.1-150.9 vs 129.0-141.6) and still overlap at day 21 (270.3 +/- 22.65 vs 238.6 +/- 14.45).",
+      "fix": "Line 87: replace with a descriptive title the design can carry, e.g. `ax.set_title(\"Day-21 weight by diet, 45 chicks\")`.",
+      "script_only": false
+    },
+    {
+      "rule": "A1",
+      "promise": "Legibility",
+      "severity": "minor",
+      "observed": "The y axis reads \"Weight\" with no unit; the sidecar records `units: null`. The values are grams.",
+      "fix": "Line 86: `ax.set_ylabel(\"Weight (g)\")`.",
+      "script_only": false
+    },
+    {
+      "rule": "A3",
+      "promise": "Legibility",
+      "severity": "minor",
+      "observed": "Four series are routed through a 2x2 legend instead of direct labels, and the legend is placed over the data - its box covers the top of the Diet 3 bar between about 140 and 150. Read left to right the legend runs Diet 1, Diet 3, Diet 2, Diet 4, so the column layout breaks the data's order.",
+      "fix": "Line 88: drop `ax.legend(...)` once the x tick labels of the C6 fix are present.",
+      "script_only": false
+    },
+    {
+      "rule": "A4",
+      "promise": "Legibility",
+      "severity": "minor",
+      "observed": "Nothing in the panel is annotated. The title names Diet 3 but no number, difference, or unit is written anywhere on the figure, so the reader must estimate the comparison off the axis.",
+      "fix": "After the error-bar call at line 80, annotate the one comparison the figure is for, e.g. the Diet 3 minus Diet 1 difference in grams with its interval.",
+      "script_only": false
+    }
+  ],
+  "rules_passed": [
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "A2",
+    "A5",
+    "A6",
+    "A7",
+    "A8"
+  ],
+  "sidecar_consistency": [
+    {
+      "field": "n_observations",
+      "declared": "578 (the field is defined as total rows plotted when sub-units are drawn)",
+      "observed": "The image draws 4 bars and 4 error bars and no observation marks at all; zero of the 578 rows appear as marks."
+    },
+    {
+      "field": "experimental_unit",
+      "declared": "\"measurement\", with n_per_group 220/120/120/118",
+      "observed": "The title speaks of chicks, and the units in the data are 20/10/10/10 chicks; the drawn whiskers are measurement-level SEs, 2.3-3.8x narrower than chick-level SEs."
+    },
+    {
+      "field": "question / excluded",
+      "declared": "\"Does final weight differ by diet?\" with excluded \"none\"",
+      "observed": "Bar tops are 102.6/122.6/143.0/135.3, the all-days pooled means; day-21 means are 177.8/214.7/270.3/238.6. No final-day selection was applied, and 5 of 50 chicks never reach day 21 (unbalanced: 4 from diet 1, 1 from diet 4)."
+    },
+    {
+      "field": "axes",
+      "declared": "y only - variable weight, limits [95,150], baseline_zero false",
+      "observed": "A categorical x axis is present in the image carrying four bar positions, with no entry in the sidecar and no tick labels on the figure."
+    },
+    {
+      "field": "axes.y.limits",
+      "declared": "[95, 150]",
+      "observed": "Matches the drawing, but Diet 3's SE whisker reaches 150.9 and is clipped by the 150 limit, so the declared range hides the top of an interval the figure draws."
+    },
+    {
+      "field": "error_bar",
+      "declared": "\"standard error\"",
+      "observed": "The whiskers appear with no definition anywhere in the image, and the declaration states no n."
+    }
+  ],
+  "title_overstates": true,
+  "notes": "Severity follows the contract's two-tier statement that any C1-C12 violation blocks; C8, C10 and C11 would be 'major' as bare absences, but here each absence is paired with an actively misleading value (an n at the wrong unit, an SE narrowed 2.3-3.8x by that n, and an all-days mean presented under a final-weight question), so a reader who trusts the figure believes something false. C4 passes narrowly: the drawing implies no unmeasured points, though the sidecar's missing \"none\" sits beside 578 of 600 scheduled weighings. Pass 1 reached every finding above from the image and sidecar alone; pass 2 changed no verdict and added no finding, so nothing is marked script_only. The script did confirm two pass-1 inferences: `final_day` is loaded at line 63 and never used to subset, and the sidecar is written by hand at lines 94-113 rather than through save_figure. One observation for the course: the module docstring names C1, C6, C7, C10, C12 and C11 as the breaks it intends, six in all. The figure as rendered also breaks C8 and C9, which the docstring does not claim - the counterexample is more broken than it documents."
+}

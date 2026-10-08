@@ -1,0 +1,44 @@
+{
+  "figure": "trajectories.png",
+  "round": 1,
+  "verdict": "ship",
+  "findings": [
+    {
+      "rule": "A2",
+      "promise": "Legibility",
+      "severity": "minor",
+      "observed": "The y axis floor is 17.5 g by measurement (bottom spine at row 547; ticks 100/200/300 at rows 460/354/249), matching the sidecar's declared 18.1, but the lowest tick label is 100 and nothing marks where the axis starts. The 4-line footer states the x window, the grey/coloured convention, the five stops, the 0 interior gaps and the 578/50 denominators, but never the y range, so a reader who does not open the sidecar cannot tell the weight axis is not zero-based.",
+      "fix": "Add the range to the footer f-string (the `footer = (...)` block, after the 'No chick or measurement excluded' clause): 'Weight axis spans 18-390 g.' The values are already in hand two lines later as `y_lo, y_hi = axes[0].get_ylim()`; hoist that call above the footer and interpolate it.",
+      "script_only": false
+    }
+  ],
+  "rules_passed": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11",
+    "C12",
+    "A1",
+    "A3",
+    "A4",
+    "A6",
+    "A7",
+    "A8"
+  ],
+  "sidecar_consistency": [
+    {
+      "field": "axes.x.limits",
+      "declared": "[0.0, 21.0]",
+      "observed": "The drawn x axis runs to about [-1.09, 22.1] days: in panels 1 and 2 the left spine sits 22 px left of the day-0 tick at a pitch of 20.17 px/day. The y entry was taken from the axis itself (declared [18.1, 389.9] against a measured floor of 17.5 and a data range of 35-373 g), so the two axes are declared on different bases - y is the axis range, x is the data range. No data value is misstated; the discrepancy is matplotlib's 5% margin. Smallest fix: in the sidecar `axes` dict, replace `\"limits\": [float(grid[0]), float(grid[-1])]` with `list(axes[0].get_xlim())`, rounded, so x is declared the same way y is."
+    }
+  ],
+  "title_overstates": false,
+  "notes": "Pass 1 (image + sidecar only) reached verdict 'ship' with the single A2 finding, and its locked record (written before any script was opened) declared sidecar_consistency empty. Pass 2 did not change the verdict, but it is not true that it changed nothing: the axes.x.limits mismatch reported above was added after the script was read. Its evidence is image-only - the left spine sits 22 px left of the day-0 tick, a measurement already in my pass-1 pixel data - but I did not register it as a declaration/drawing contradiction until the script showed x limits being written from `grid` while y was written from `get_ylim()`. So the sidecar comparison that the protocol requires to be complete in pass 1 was, on this item, completed in pass 2. The figure did not conceal it; I missed it. Treat that as a defect in my pass-1 execution, not as the script overturning the verdict - the mismatch is 5% axis margin, carries no data value, and is recorded in sidecar_consistency rather than as a finding, so 'ship' stands on the pass-1 evidence alone.\n\nCounts and values I measured off the pixels, against what the figure asserts: four panels; x ticks 0/4/8/12/16/20 at an identical 20.17 px/day pitch in all four; y ticks 100/200/300 at identical rows 249/354/460 in all four, labelled on the left panel only (C2 holds numerically, not just by declaration). Five x glyphs total, four in diet 1 (days 2, 12, 14, 20 at roughly 35, 50, 68 and 122 g) and one in diet 4 (day 18, about 145 g), matching the five chicks the footer names; 20-16=4 and 10-9=1 reconcile with the printed day-21 denominators. The coloured mean endpoints read 176, 216, 271 and 238 g against in-panel annotations of 178, 215, 270 and 239 g - agreement to within a line width, so the stated numbers are the numbers drawn. 16 grey lines are separately resolvable at day 20.5 in diet 1 and 10 in diets 2 and 3.\n\nTwo things I checked that did not become findings. (1) In diet 4 only about 6 of the 9 grey lines weighed at day 21 are separately resolvable at the right edge - five endpoints cluster between 197 and 205 g and the thick mean covers others. A6 is satisfied on its own test: the lines are drawn with transparency so coincident ones darken, and the counts are printed ('10 chicks', 'day 21: 9/10 weighed'), so the reader is not left guessing n. (2) Diet 1's day-21 mean of 178 g is computed over the 16 survivors, and the four x glyphs sit at 35-122 g, well below the survivor cloud, so that mean is composition-shifted upward relative to the full 20 chicks. The figure discloses exactly this - unequal denominators per panel, the mean dashed from the day the denominator first falls, each dropout's last weighing marked and named - so C11 is kept and the title's numbers remain true as stated ('mean day-21 weight'). It makes no causal or comparative assertion, so C12 is kept too.\n\nOne latent fragility, not a violation of any rule by this figure: the solid/dashed split uses `last_complete = per_day.index[complete].max()`, the maximum complete day rather than the end of the first contiguous complete run. ChickWeight dropouts are terminal, so the two coincide here (diet 1 solid to day 2, diet 4 to day 18, diets 2 and 3 throughout - all as drawn). On a dataset where a unit misses a day and returns, the mean would be drawn solid across a stretch where its denominator was short. Worth knowing if the script is reused; nothing to fix for this figure.\n\nLegibility observation with no rule to cite: the footer's first line ends 8 px from the right edge of a 2641 px canvas. Nothing is clipped in this render, but there is no margin left for a longer stop list.\n\nA5 is not listed as passed because it does not apply: the figure contains no histogram, density or smoothed estimate whose conclusion could depend on bin width or bandwidth."
+}

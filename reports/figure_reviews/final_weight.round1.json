@@ -1,0 +1,37 @@
+{
+  "figure": "final_weight.png",
+  "round": 1,
+  "verdict": "ship",
+  "findings": [
+    {
+      "rule": "A2",
+      "promise": "Legibility",
+      "severity": "minor",
+      "observed": "The y axis runs from 59 g to 388 g with its lowest tick label at 100 g, so the drawn baseline is not zero and is not labelled. The 4-line caption never says what range is drawn; only the sidecar does ('the drawn range 59-388 g spans every displayed chick (74-373 g)'). A reader holding the image alone has to infer the limits from the tick ladder.",
+      "fix": "Append the range to the caption string built at the `caption = (f\"Day-{day} weight of every chick weighed on day {day}; ...\" + contract_caption(contract))` assignment, reusing the `ylim` already captured a few lines above: add one clause, e.g. f\" y axis {ylim[0]:.0f}-{ylim[1]:.0f} {ds['value_units']}, baseline not zero.\" Nothing else changes.",
+      "script_only": false
+    }
+  ],
+  "rules_passed": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11",
+    "C12",
+    "A1",
+    "A3",
+    "A4",
+    "A6",
+    "A8"
+  ],
+  "sidecar_consistency": [],
+  "title_overstates": false,
+  "notes": "Pass 1 measurements, from the image alone. Calibrating on the y ticks (100-350 g, 77 px per 50 g) puts the bottom spine at 59.1 g, matching the declared axes.y.limits[0] = 59.05. Colour segmentation plus zoomed visual counting gives 16, 10, 10 and 9 marks - exactly the printed 'n =' row and the declared n_per_group - 45 in total, as the title says. The drawn interval caps read 146.4-209.4, 158.8-270.5, 219.2-321.8 and 205.5-271.8 g; a 95% t-interval recomputed over the plotted points themselves gives 146.6-209.1, 159.0-270.7, 219.4-321.8 and 204.8-271.8 g, so the bar is the interval it says it is, at the chick, over the chicks drawn (C7, C10). The annotation 'group means span 178-270 g' matches the drawn crossbars at 177.6 and 270.5 g (A4). Diets 2, 3 and 4 carry one mark per chick with no total occlusion; the three diet-4 points near 195-205 g overlap and the CI bar is drawn over two more, but all nine stay separable at full resolution, so C9/A6 hold. Pass 2 found nothing the image concealed, and could not have changed the verdict. Two observations about the script that are not rule violations of this figure. First, the completeness clause in `missing` is generated as `df[time].nunique()` - the number of distinct days in the whole file - and asserted of each displayed chick rather than checked per chick; on this data the claim is true (all 45 retained chicks have 12 rows), but the sentence would stay in the sidecar unchanged if a retained chick ever had a gap. Second, the figure is honest about the limit of its own exclusion disclosure: it reports that diet 1 lost 4 of 20 and diets 2 and 3 lost none, and does not try to imply what those 4 chicks would have weighed. That is what C11 asks for; the direction of the loss belongs to the trajectory figure, which I have not seen and have assumed nothing about."
+}
