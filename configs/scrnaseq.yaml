@@ -1,0 +1,106 @@
+# Parameters for the scRNA-seq immunotherapy tumour-response analysis
+# (workflows/00_download_data.py .. 06_pseudobulk_de.py).
+#
+# Every threshold, count, resolution and gene list used by that analysis is
+# here. No workflow step may contain a numeric threshold of its own
+# (WORKSPACE.md rule 3). The random seed is inherited from configs/project.yaml.
+
+dataset:
+  accession: GSE120575
+  citation: >-
+    Sade-Feldman M, et al. Defining T cell states associated with response to
+    checkpoint immunotherapy in melanoma. Cell 175:998-1013 (2018).
+  base_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE120nnn/GSE120575/suppl
+  files:
+    expression: GSE120575_Sade_Feldman_melanoma_single_cells_TPM_GEO.txt.gz
+    annotation: GSE120575_patient_ID_single_cells.txt.gz
+  # The matrix is distributed as log2(TPM+1), already normalised by the
+  # authors. It is NOT raw counts, which constrains the method choices below.
+  expression_unit: log2(TPM+1)
+
+build:
+  # Streaming parse: rows of the text matrix read per chunk. Lower this if the
+  # machine has less than 16 GB of RAM.
+  chunk_rows: 2000
+  # Expected cohort, asserted after the object is built. Taken from the paper,
+  # not from the data, so that a silent parsing error fails loudly.
+  expect:
+    n_cells: 16291
+    n_patients: 32
+    n_samples: 48
+
+qc:
+  # The authors released a curated CD45+ set (all cells already exceed ~1,000
+  # detected genes), so only extreme mitochondrial content is removed.
+  max_pct_mito: 40
+  min_cells_per_gene: 3
+  # Recorded for the QC table but not applied as a filter; see DECISIONS.md.
+  reference_min_genes: 200
+  mito_prefix: "MT-"
+
+cluster:
+  n_top_genes: 2000
+  scale_max_value: 10
+  n_pcs: 40
+  n_neighbors: 15
+  leiden_resolution: 1.0
+  # Harmony corrects donor effects; the batch key is the patient.
+  batch_key: patient
+
+annotation:
+  # Canonical lineage markers. Cluster labels are assigned by mean z-scored
+  # expression of these panels, then checked against the marker table.
+  markers:
+    CD8 T:            [CD8A, CD8B, CD3D, CD3E]
+    CD4 T conv:       [CD4, IL7R, TRAC, CD3D]
+    Treg:             [FOXP3, IL2RA, CTLA4, TNFRSF4, TNFRSF18]
+    Cycling T:        [MKI67, TOP2A, STMN1, TUBA1B]
+    NK:               [NKG7, GNLY, KLRF1, KLRD1]
+    B:                [MS4A1, CD79A, CD79B, CD19, IGKC]
+    Plasma:           [MZB1, JCHAIN, XBP1, DERL3]
+    Macrophage/Mono:  [CD14, LYZ, C1QA, TYROBP, FCER1G]
+    pDC:              [LILRA4, IL3RA, PLD4, IRF8]
+  # CD8 cells are further split into two states by per-cell gene-set score.
+  cd8_states:
+    memory:    [IL7R, TCF7, CCR7, SELL, LEF1, GZMK]
+    exhausted: [PDCD1, HAVCR2, LAG3, TIGIT, TOX, CTLA4]
+  marker_test: wilcoxon
+  n_markers_reported: 50
+
+composition:
+  # Primary unit of analysis. "patient" collapses the Pre/Post biopsies of a
+  # patient into one observation; "biopsy" reproduces the example's unit and
+  # is reported alongside for comparison. See DECISIONS.md.
+  primary_unit: patient
+  secondary_unit: biopsy
+  min_cells_per_sample: 20
+  test: mannwhitneyu
+  multiple_testing: fdr_bh
+  alpha: 0.05
+  ratio_numerator: CD8 memory-like
+  ratio_denominator: CD8 exhausted
+
+pseudobulk_de:
+  compartment: CD8
+  min_cd8_cells_per_sample: 10
+  min_cells_per_sample_all: 20
+  test: mannwhitneyu
+  multiple_testing: fdr_bh
+  # A gene must reach this pseudobulk mean in at least one group to be
+  # eligible for the signature.
+  min_group_mean: 0.1
+  n_signature_genes_cv: 25
+  n_signature_genes_final: 20
+  # Ribosomal, mitochondrial, pseudogene and generic-housekeeping families are
+  # excluded from signatures: they track library composition, not biology.
+  exclude_gene_pattern: "^(RP[LS0-9]|RP11-|RP5-|RP1-|CTA-|CTD-|AC\\d|AL\\d|MT-|MTND|MTATP|MYL6|GAPDH|SUB1|PSME|ACTR|CALM|ANXA5|NUCB|MALAT1|LINC\\d)"
+
+benchmark_signature:
+  # Published signature from Sade-Feldman et al. 2018, used as an independent
+  # benchmark against the data-driven one.
+  responder:     [TCF7, CCR7, IL7R, SELL, LEF1, CD27, CD28, FOXP1, GPR183, LTB]
+  non_responder: [PDCD1, HAVCR2, LAG3, TIGIT, CD38, GZMB, PRF1, NKG7, CCL4, CCL5]
+
+figures:
+  dpi: 150
+  format: png

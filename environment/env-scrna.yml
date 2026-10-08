@@ -1,0 +1,33 @@
+# Environment for the single-cell analysis step (workflows/00_*.py .. 06_*.py).
+#
+# Scope: this one analysis step only. Other steps get their own env-<step>.yml
+# rather than being added here (WORKSPACE.md section 5).
+#
+# Floors are given here so the environment solves on Linux and macOS; the
+# exact versions this analysis was run with are in env-scrna.lock.txt and are
+# the ones to use when reproducing the published numbers.
+#
+#   conda env create -f environment/env-scrna.yml
+#   conda activate scrna
+
+name: scrna
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.12
+  - scanpy>=1.12
+  - anndata>=0.13
+  - harmonypy>=2.0
+  - leidenalg>=0.12
+  - python-igraph>=1.0
+  - scikit-learn>=1.9
+  - statsmodels>=0.15
+  - scipy>=1.18
+  - pandas>=3.0
+  - numpy>=2.5
+  - matplotlib>=3.11
+  - seaborn>=0.13
+  - h5py>=3.16
+  - pyyaml>=6.0
