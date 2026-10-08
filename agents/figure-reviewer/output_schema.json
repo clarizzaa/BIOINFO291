@@ -1,0 +1,82 @@
+{
+  "type": "object",
+  "required": ["figure", "round", "verdict", "findings", "rules_passed",
+               "sidecar_consistency", "title_overstates"],
+  "properties": {
+    "figure": {
+      "type": "string",
+      "description": "File name of the reviewed image."
+    },
+    "round": {
+      "type": "integer",
+      "description": "Review round, starting at 1."
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["ship", "revise", "blocked"],
+      "description": "blocked if any finding is blocking; revise if any is major; otherwise ship."
+    },
+    "findings": {
+      "type": "array",
+      "description": "One entry per rule violated. Empty if none.",
+      "items": {
+        "type": "object",
+        "required": ["rule", "promise", "severity", "observed", "fix"],
+        "properties": {
+          "rule": {
+            "type": "string",
+            "description": "Rule identifier from docs/figure-contract.md, e.g. C7 or A4."
+          },
+          "promise": {
+            "type": "string",
+            "enum": ["Magnitude", "Meaning", "Evidence", "Context", "Claim",
+                     "Legibility"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["blocking", "major", "minor"]
+          },
+          "observed": {
+            "type": "string",
+            "description": "What is actually in the figure or sidecar. Not a restatement of the rule."
+          },
+          "fix": {
+            "type": "string",
+            "description": "Smallest change that satisfies the rule. After pass 2, names the line."
+          },
+          "script_only": {
+            "type": "boolean",
+            "description": "True if this was invisible from the image and sidecar and only surfaced on reading the script.",
+            "default": false
+          }
+        }
+      }
+    },
+    "rules_passed": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Rule identifiers checked and satisfied, so the rubric can be audited."
+    },
+    "sidecar_consistency": {
+      "type": "array",
+      "description": "Places where the image contradicts what the sidecar declares. Empty if consistent.",
+      "items": {
+        "type": "object",
+        "required": ["field", "declared", "observed"],
+        "properties": {
+          "field": { "type": "string" },
+          "declared": { "type": "string" },
+          "observed": { "type": "string" }
+        }
+      }
+    },
+    "title_overstates": {
+      "type": "boolean",
+      "description": "True if the title asserts more than the study design supports (C12)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional. Anything the structured fields cannot carry."
+    }
+  }
+}
