@@ -23,23 +23,44 @@ the same figures.
     environment/      per-step conda specs and lock files
     docs/             how this repo is driven inside Claude Science
 
-## Reproducing the analysis
+## Analyses
+
+### scRNA-seq immunotherapy tumour response (GSE120575)
+
+Immune composition and CD8 T-cell state in 48 melanoma biopsies taken before
+and during checkpoint blockade, from Sade-Feldman et al., *Cell* 2018.
+Reproduces the course's worked example, with the experimental unit corrected
+from the biopsy to the patient.
+
+**Report: [reports/scrnaseq-immunotherapy.md](reports/scrnaseq-immunotherapy.md)**
 
     git clone https://github.com/clarizzaa/BIOINFO291.git
     cd BIOINFO291
+    conda env create -f environment/env-scrna.yml
+    conda activate scrna
+    bash workflows/run_all.sh
 
-    # 1. recreate the environment for the step you want to run
-    conda env create -f environment/env-<step>.yml
+That downloads ~127 MB from GEO on the first run, verifies it against the
+checksums in [data/metadata/SOURCES.md](data/metadata/SOURCES.md), and
+regenerates every table in `results/`, every figure in `figures/`, and the
+report itself. It takes roughly three minutes on a laptop and needs about
+2 GB of memory.
 
-    # 2. obtain the raw inputs listed in data/metadata/SOURCES.md
-    #    and verify them
-    shasum -a 256 -c data/metadata/CHECKSUMS.txt   # once inputs exist
+| Step | Does |
+|---|---|
+| `00_download_data.py` | fetch GSE120575, checksum it, make it read-only, register it |
+| `01_build_anndata.py` | parse the matrix and clinical labels into an AnnData |
+| `02_qc.py` | QC filters, with counts removed at each step |
+| `03_cluster.py` | HVGs, PCA, Harmony over patients, Leiden, UMAP |
+| `04_annotate.py` | label clusters as immune populations from marker panels |
+| `05_composition.py` | confounding checks, then composition tests per patient |
+| `06_pseudobulk_de.py` | pseudobulk DE and a cross-validated response signature |
+| `07_report.py` | write the report from the generated results |
 
-    # 3. run the workflow in order
-    #    (workflows/ scripts are numbered; each states its inputs and outputs)
+Each step is independently runnable and declares its inputs and outputs at
+the top of the file. Checks on the repository's own rules:
 
-Analyses are added one at a time; this section is extended as each workflow
-lands.
+    conda activate scrna && pytest -q
 
 ## Provenance
 

@@ -68,8 +68,12 @@ def confounding_table(meta: pd.DataFrame) -> pd.DataFrame:
         rows.append({
             "variable": var, "test": "chi-square", "statistic": round(float(chi2), 3),
             "dof": int(dof), "p": float(p), "n_biopsies": int(ct.to_numpy().sum()),
-            "detail": "; ".join(f"{i}: " + "/".join(str(v) for v in ct.loc[i])
-                                for i in ct.index),
+            # Spell out which count belongs to which group: a bare "26/9" is
+            # unreadable without knowing the column order.
+            "detail": "; ".join(
+                f"{i}: " + ", ".join(f"{int(ct.loc[i, c])} {c}" for c in ct.columns)
+                for i in ct.index
+            ),
         })
     r = meta.loc[meta.response == "Responder", "n_cells"]
     nr = meta.loc[meta.response == "Non-responder", "n_cells"]
