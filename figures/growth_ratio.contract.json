@@ -1,0 +1,50 @@
+{
+  "question": "Is the difference between diets about absolute size, or about growth rate?",
+  "claim": "Every chick weighed 39-43 g at day 0; by day 21 chicks had grown 1.8-9.1\u00d7 that weight; diet medians 3.9-6.8\u00d7",
+  "experimental_unit": "chick",
+  "n_per_group": {
+    "1": 20,
+    "2": 10,
+    "3": 10,
+    "4": 10
+  },
+  "n_observations": "578 measurements drawn as 50 per-chick trajectories; each grey line is one chick, no mark is an independent unit",
+  "error_bar": "no interval is drawn. The bold line is the mean log2 ratio over the chicks measured on that day, so its n falls where follow-up was lost (diet 1: 20 chicks at day 0 to 16 at day 21; diet 4: 10 to 9; diets 2 and 3 constant). Each grey line is one chick",
+  "transformations": [
+    "log2( weight / that same chick's day-0 weight ); 0 = no change (1\u00d7), drawn as a dashed line in every panel, and the y ticks give the ratio alongside the log2 value"
+  ],
+  "normalisation_note": "dividing by day 0 sets every chick to 0 there by construction, so this figure cannot show a baseline difference even if one existed. Day-0 weights were 39-43 g overall (diet means 40.7-41.4 g), so the normalisation removes almost no between-diet difference; the range is stated in the title because the reader cannot see it",
+  "axes": {
+    "x": {
+      "variable": "time",
+      "units": "days since hatch",
+      "limits": [
+        0,
+        21
+      ],
+      "baseline_zero": true
+    },
+    "y": {
+      "variable": "log2(weight / own day-0 weight)",
+      "units": "log2 ratio, dimensionless",
+      "limits": [
+        -0.15611920191728185,
+        3.185479815637154
+      ],
+      "baseline_zero": "not applicable; 0 is the no-change reference and is drawn"
+    }
+  },
+  "shared_scales": "yes; all four panels share both axes by construction (sharex=sharey=True in trajectories_by_group), identical limits and ticks, y tick labels shown once on the left panel",
+  "color": {
+    "variable": "diet",
+    "scale": "qualitative",
+    "palette": "okabe_ito",
+    "redundant_with": "panel position and panel title; colour marks only the mean line"
+  },
+  "excluded": "nothing: all 50 chicks and all 578 measurements are drawn, and every chick has a day-0 weight to divide by. Follow-up ended before day 21 for 4 of 20 on diet 1, 0 of 10 on diet 2, 0 of 10 on diet 3, 1 of 10 on diet 4 - that loss is differential across diets, so those trajectories simply stop and the panel titles give both counts",
+  "missing": "no interior measurements are missing; every chick was weighed at every scheduled day up to its last. Chicks whose follow-up ended early have a line that stops there and is not extended or imputed",
+  "source_script": "workflows/23_fig_growth_ratio.py",
+  "config": "configs/chickweight.yaml",
+  "figure": "growth_ratio.png",
+  "git_sha": "e55984f-dirty"
+}

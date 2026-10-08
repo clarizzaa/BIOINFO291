@@ -1,0 +1,54 @@
+{
+  "question": "How do growth trajectories differ across diets, and how consistent are those patterns across individual chicks?",
+  "claim": "Weight of every chick from hatch to day 21 on four diets; mean day-21 weight ranged from 178 g (diet 1) to 270 g (diet 3)",
+  "experimental_unit": "chick",
+  "n_per_group": {
+    "1": 20,
+    "2": 10,
+    "3": 10,
+    "4": 10
+  },
+  "n_observations": 578,
+  "error_bar": "none; the coloured line is the arithmetic mean weight of the chicks weighed on that day, not an interval",
+  "transformations": [],
+  "axes": {
+    "x": {
+      "variable": "time",
+      "units": "days since hatch",
+      "limits": [
+        0.0,
+        21.0
+      ],
+      "baseline_zero": true
+    },
+    "y": {
+      "variable": "weight",
+      "units": "g",
+      "limits": [
+        18.1,
+        389.9
+      ],
+      "baseline_zero": false
+    }
+  },
+  "shared_scales": {
+    "shared": true,
+    "axes": [
+      "x",
+      "y"
+    ],
+    "detail": "4 panels built with sharex=sharey=True; identical limits and ticks, y labelled on the left panel only"
+  },
+  "color": {
+    "variable": "diet",
+    "scale": "qualitative",
+    "palette": "okabe_ito",
+    "redundant_with": "panel position and panel title; individual chicks are grey in every panel"
+  },
+  "excluded": "none; no chick, weighing, or timepoint was filtered. Denominator of the day-21 mean per diet: 1: 16/20, 2: 10/10, 3: 10/10, 4: 9/10 chicks weighed, because five chicks stop earlier",
+  "missing": "Each chick is reindexed onto the full scheduled day grid (0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 21), so an unmeasured day is NaN and the line breaks rather than interpolating; 0 such days fall inside a chick's observed range. Five chicks are not weighed through to day 21 (chick 18 (diet 1) day 2; chick 16 (diet 1) day 12; chick 15 (diet 1) day 14; chick 8 (diet 1) day 20; chick 44 (diet 4) day 18); each of those lines ends at its last weighing and is marked with an x, so a short line reads as measurement stopping rather than weight plateauing. The diet mean is dashed over the days when its denominator is below the diet's full chick count.",
+  "source_script": "workflows/21_fig_trajectories.py",
+  "config": "configs/chickweight.yaml",
+  "figure": "trajectories.png",
+  "git_sha": "e55984f-dirty"
+}

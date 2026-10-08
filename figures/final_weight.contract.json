@@ -1,0 +1,48 @@
+{
+  "question": "What changes if diets are compared only on the day-21 weight, instead of on the whole growth trajectory?",
+  "claim": "Day-21 weight by diet, in 45 of 50 chicks",
+  "experimental_unit": "chick",
+  "n_per_group": {
+    "1": 16,
+    "2": 10,
+    "3": 10,
+    "4": 9
+  },
+  "n_observations": "none; each of the 45 points is one chick's day-21 weight",
+  "error_bar": "mean with 95% CI, computed per diet over the chicks drawn in that diet (the n printed above it)",
+  "transformations": [],
+  "axes": {
+    "x": {
+      "variable": "diet",
+      "units": "none (4 unordered diets)",
+      "limits": [
+        -0.6,
+        3.6
+      ],
+      "baseline_zero": false
+    },
+    "y": {
+      "variable": "weight",
+      "units": "g",
+      "limits": [
+        59.05,
+        387.95
+      ],
+      "baseline_zero": false,
+      "note": "points, not bars, so a non-zero baseline is permitted (A2); the drawn range 59-388 g spans every displayed chick (74-373 g)"
+    }
+  },
+  "color": {
+    "variable": "diet",
+    "scale": "qualitative",
+    "palette": "okabe_ito",
+    "redundant_with": "x position and x tick label"
+  },
+  "excluded": "5 of 50 chicks were never weighed on day 21 and are not drawn; the loss is unequal across the diets being compared (diet 1: 4 of 20; diet 2: 0 of 10; diet 3: 0 of 10; diet 4: 1 of 10), and retained/assigned is printed under every diet on the figure",
+  "missing": "none among the 45 displayed chicks: each has all 12 scheduled weighings and every point is an observed day-21 measurement, none interpolated or imputed",
+  "_notes": "On the excluded chicks: they were last weighed on days 2-20 at 35-146 g. Those are earlier-day weights, not day-21 weights, so they are not comparable to the plotted values and are not drawn; for scale, 6 of the 45 displayed day-21 weights fall below the largest of them, and the displayed weights span 74-373 g. The direction of the loss therefore cannot be read off this figure; it is visible in the trajectories of step 21. What this figure does show is that diet 1 contributes 4 fewer chicks to the comparison than it was assigned, while diets 2, 3 lose none.",
+  "source_script": "workflows/22_fig_final_weight.py",
+  "config": "configs/chickweight.yaml",
+  "figure": "final_weight.png",
+  "git_sha": "e55984f-dirty"
+}
