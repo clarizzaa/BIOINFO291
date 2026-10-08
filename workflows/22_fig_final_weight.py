@@ -3,8 +3,8 @@
 
 Inputs   : data/raw/chickweight.csv
            configs/chickweight.yaml
-Outputs  : figures/final_weight.png
-           figures/final_weight.contract.json
+Outputs  : figures/chickweight/final_weight.png
+           figures/chickweight/final_weight.contract.json
 Env      : bioinfo291-viz   (environment/env-viz.yml)
 
     python workflows/22_fig_final_weight.py
@@ -210,7 +210,7 @@ def main() -> None:
         ha="left", va="top", fontsize=cap_size,
     )
 
-    out, sidecar = save_figure(fig, P.figures / "final_weight.png", contract,
+    out, sidecar = save_figure(fig, P.root / cfg["outputs"]["figures"] / "final_weight.png", contract,
                                repo=P.root)
     plt.close(fig)
 

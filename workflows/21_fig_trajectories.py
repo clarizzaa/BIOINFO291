@@ -3,8 +3,8 @@
 
 Inputs   : data/raw/chickweight.csv
            configs/chickweight.yaml
-Outputs  : figures/trajectories.png
-           figures/trajectories.contract.json
+Outputs  : figures/chickweight/trajectories.png
+           figures/chickweight/trajectories.contract.json
 Env      : bioinfo291-viz   (environment/env-viz.yml)
 
     python workflows/21_fig_trajectories.py
@@ -187,7 +187,7 @@ def main() -> None:
     fig.text(0.0, -0.02, footer, ha="left", va="top", fontsize=small, wrap=True)
 
     y_lo, y_hi = axes[0].get_ylim()
-    out = P.figures / "trajectories.png"
+    out = P.root / cfg["outputs"]["figures"] / "trajectories.png"
     png, sidecar = save_figure(fig, out, {
         "question": ("How do growth trajectories differ across diets, and how "
                      "consistent are those patterns across individual chicks?"),

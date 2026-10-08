@@ -50,5 +50,5 @@
   "source_script": "workflows/21_fig_trajectories.py",
   "config": "configs/chickweight.yaml",
   "figure": "trajectories.png",
-  "git_sha": "e55984f-dirty"
+  "git_sha": "1f48260-dirty"
 }

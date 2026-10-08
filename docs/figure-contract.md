@@ -265,7 +265,7 @@ Reported by the reviewer, never blocking.
 
 ## The sidecar
 
-Every figure in `figures/` is accompanied by `figures/<name>.contract.json`,
+Every figure is accompanied by a `<name>.contract.json` sitting beside it,
 written by the generating script, declaring what the figure promises. The
 sidecar is what makes review mechanical: the reviewer checks the rendered image
 against these declarations and reports any mismatch.

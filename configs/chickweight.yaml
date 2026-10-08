@@ -31,5 +31,8 @@ figure:
   size_two_panel: [7.2, 2.8]
 
 outputs:
-  figures: figures
+  # Week-2 figures live in their own subdirectory so figures/ does not become
+  # one flat pile shared with week 1's melanoma figures. Sidecars sit beside
+  # their figure. save_figure creates the directory if it is absent.
+  figures: figures/chickweight
   results: results

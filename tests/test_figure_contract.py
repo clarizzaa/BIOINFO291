@@ -147,8 +147,12 @@ def _pre_contract_figures():
 def test_every_figure_has_a_complete_sidecar():
     """No figure may exist in this repository without declaring itself."""
     exempt = _pre_contract_figures()
-    figures = [p for p in sorted((REPO / "figures").glob("*.png"))
+    # rglob, not glob: figures are organised into per-dataset subdirectories
+    # (figures/chickweight/ and so on), and a non-recursive glob would quietly
+    # stop checking every figure the moment one was filed away.
+    figures = [p for p in sorted((REPO / "figures").rglob("*.png"))
                if p.name not in exempt]
+    assert figures, "no figures found to check; has the figures/ layout changed?"
     for png in figures:
         sidecar = png.with_suffix(".contract.json")
         assert sidecar.exists(), f"{png.name} has no sidecar"

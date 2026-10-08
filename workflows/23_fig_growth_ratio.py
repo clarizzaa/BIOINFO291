@@ -4,8 +4,8 @@ day-0 weight, on a log2 axis.
 
 Inputs   : data/raw/chickweight.csv
            configs/chickweight.yaml
-Outputs  : figures/growth_ratio.png
-           figures/growth_ratio.contract.json
+Outputs  : figures/chickweight/growth_ratio.png
+           figures/chickweight/growth_ratio.contract.json
 Env      : bioinfo291-viz   (environment/env-viz.yml)
 
     python workflows/23_fig_growth_ratio.py
@@ -282,7 +282,7 @@ def main() -> None:
         transform=fig.transFigure,
     )
 
-    out = Path(P.figures) / "growth_ratio.png"
+    out = P.root / cfg["outputs"]["figures"] / "growth_ratio.png"
     png, sidecar = save_figure(fig, out, contract, repo=P.root)
     print(f"wrote {png.relative_to(P.root)}")
     print(f"wrote {sidecar.relative_to(P.root)}")

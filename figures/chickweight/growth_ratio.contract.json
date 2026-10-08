@@ -46,5 +46,5 @@
   "source_script": "workflows/23_fig_growth_ratio.py",
   "config": "configs/chickweight.yaml",
   "figure": "growth_ratio.png",
-  "git_sha": "e55984f-dirty"
+  "git_sha": "1f48260-dirty"
 }

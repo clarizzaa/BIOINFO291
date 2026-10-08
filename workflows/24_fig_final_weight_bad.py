@@ -3,8 +3,8 @@
 
 Inputs   : data/raw/chickweight.csv
            configs/chickweight.yaml
-Outputs  : figures/final_weight_bad.png
-           figures/final_weight_bad.contract.json
+Outputs  : figures/chickweight/final_weight_bad.png
+           figures/chickweight/final_weight_bad.contract.json
 Env      : bioinfo291-viz   (environment/env-viz.yml)
 
     python workflows/24_fig_final_weight_bad.py
@@ -87,7 +87,7 @@ def main() -> None:
     ax.set_title("Diet 3 improves chick growth")   # C12: causal, unsupported
     ax.legend(bars, [f"Diet {d}" for d in diets], ncol=2)
 
-    out = P.figures / "final_weight_bad.png"
+    out = P.root / cfg["outputs"]["figures"] / "final_weight_bad.png"
     fig.savefig(out, dpi=cfg["figure"]["dpi"], bbox_inches="tight")
 
     # Written by hand: save_figure would reject this figure.
