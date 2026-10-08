@@ -1,0 +1,13 @@
+# Environment for the week-2 data-visualization workflows (workflows/2*).
+# Create with:  conda env create -f environment/env-viz.yml
+name: bioinfo291-viz
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pandas
+  - numpy
+  - matplotlib
+  - scipy
+  - pyyaml
+  - pytest

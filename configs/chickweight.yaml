@@ -1,0 +1,35 @@
+# Parameters for the week-2 data-visualization workflows (workflows/2*).
+# WORKSPACE.md rule 3: code reads these values; code does not contain them.
+
+dataset:
+  path: data/raw/chickweight.csv
+  # The independent unit. Repeated measurements of one chick are not
+  # replicates (docs/figure-contract.md C7).
+  experimental_unit: chick
+  group: diet
+  time: time
+  value: weight
+  value_units: g
+  time_units: days since hatch
+  final_day: 21
+
+contract:
+  # C9: at or below this many units per group, every observation is drawn
+  # rather than summarized. A declared parameter rather than a number in prose.
+  show_all_observations_below_n: 25
+  # C10: which interval the figures report, and how it is named in captions.
+  interval: CI95
+
+figure:
+  dpi: 300
+  base_font_size: 9
+  palette: okabe_ito            # qualitative; see kernel.py OKABE_ITO
+  sequential_cmap: viridis
+  diverging_cmap: RdBu_r
+  size_trajectories: [7.2, 2.2]
+  size_single_panel: [3.6, 2.8]
+  size_two_panel: [7.2, 2.8]
+
+outputs:
+  figures: figures
+  results: results

@@ -1,0 +1,11 @@
+ChickWeight provenance
+
+source:      R datasets package (base R), datasets::ChickWeight
+reference:   Crowder & Hand (1990); Pinheiro & Bates (2000)
+obtained:     2026-10-08
+R version:    R version 4.5.3 (2026-03-11)
+rows:         578
+chicks:       50
+sha256:       7e04dfcf38df4ae2696d27a9e2edc569406da622db777297abcbda88249a45fd
+
+Columns: chick (id), diet (1-4), time (days since hatch), weight (grams).
