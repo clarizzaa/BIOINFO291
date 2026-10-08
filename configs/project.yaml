@@ -1,0 +1,17 @@
+# Project-wide settings. Analysis parameters live in their own config files
+# (e.g. configs/scrnaseq.yaml), one per workflow.
+
+project:
+  name: BIOINFO291 reproducible analysis
+  course: BIOINFO291 / CHEM291 - Practical Data Analysis in Systems Biology
+
+# Single seed for the whole project. Every stochastic step reads this value;
+# no function call may contain a literal seed.
+random_seed: 42
+
+paths:
+  raw: data/raw
+  metadata: data/metadata
+  processed: data/processed
+  results: results
+  figures: figures
