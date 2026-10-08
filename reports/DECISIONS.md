@@ -24,6 +24,37 @@ Reason:       Single-cell matrices are too large for a git repository, and a
               git-lfs adds a dependency the grader would also need.
 Affects:      .gitignore, data/metadata/SOURCES.md
 
+## 2026-10-08  The patient is the experimental unit, not the biopsy
+Decision:     Test composition on per-patient mean proportions (n = 28), and
+              report the biopsy-level test (n = 48) beside it. Exclude the
+              four patients whose own biopsies carry contradictory response
+              labels from the patient-level response test only. Compare Post
+              against Pre with a paired signed-rank test on the 11 patients
+              biopsied at both timepoints.
+Alternatives: Biopsy-level Mann-Whitney on all 48, as the reference example
+              does; a mixed-effects model on all 48 with a patient random
+              intercept.
+Reason:       The 48 biopsies come from 32 patients, so they are not 48
+              independent replicates, and WORKSPACE.md section 3 requires the
+              unit to be the patient. Response in GSE120575 is recorded per
+              lesion, which is why P1, P4, P5 and P28 are internally
+              contradictory; no patient-level label exists for them. A
+              mixed-effects model would retain all 48 points but is fragile at
+              this n and harder to defend than a rank test.
+              The correction changes the conclusions, which is the point of
+              reporting both. Surviving at patient level: cycling T up in
+              non-responders (padj 0.0005), B cells up in responders (0.012),
+              pDC up in non-responders (0.042). Not surviving: macrophage /
+              monocyte (biopsy 0.019 -> patient 0.305) and the CD8
+              memory-to-exhausted ratio (biopsy 0.035 -> patient 0.144). CD8
+              exhausted sits on the boundary (0.026 -> 0.051). Those three
+              were carried by repeated biopsies of the same patients.
+              A sensitivity analysis excluding the FACS-enriched biopsies
+              (n = 24 patients) leaves the three surviving findings intact.
+Affects:      configs/scrnaseq.yaml (composition.*), workflows/05_composition.py,
+              results/composition_stats.csv, results/patient_proportions.csv,
+              figures/composition_boxplots.png
+
 ## 2026-10-08  Hierarchical cluster annotation, calibrated within each level
 Decision:     Label clusters (not cells) in three levels - compartment, then
               subset within the T compartment, then CD8 state - z-scoring each

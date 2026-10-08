@@ -1,0 +1,48 @@
+comparison,unit,test,population,group_a,group_b,n_a,n_b,median_a,median_b,statistic,p,padj,significant
+Responder vs Non-responder,patient,Mann-Whitney,CD8 memory-like,Responder,Non-responder,10,18,0.1416,0.1806,79.0,0.6146574383967253,0.6914896181963159,False
+Responder vs Non-responder,patient,Mann-Whitney,CD8 exhausted,Responder,Non-responder,10,18,0.0439,0.0755,42.0,0.02275932651060658,0.05120848464886481,False
+Responder vs Non-responder,patient,Mann-Whitney,CD4 T conv,Responder,Non-responder,10,18,0.383,0.3579,98.0,0.7191481712665919,0.7191481712665919,False
+Responder vs Non-responder,patient,Mann-Whitney,Treg,Responder,Non-responder,10,18,0.033,0.0435,67.5,0.29144195869104494,0.3747110897456292,False
+Responder vs Non-responder,patient,Mann-Whitney,Cycling T,Responder,Non-responder,10,18,0.0152,0.0408,5.0,5.077745372062511e-05,0.000456997083485626,True
+Responder vs Non-responder,patient,Mann-Whitney,NK,Responder,Non-responder,10,18,0.0594,0.0979,55.0,0.09809736608894373,0.1765752589600987,False
+Responder vs Non-responder,patient,Mann-Whitney,B,Responder,Non-responder,10,18,0.2313,0.0517,153.0,0.0027296781893087225,0.012283551851889252,True
+Responder vs Non-responder,patient,Mann-Whitney,Macrophage/Mono,Responder,Non-responder,10,18,0.0432,0.0538,63.0,0.20363127209111542,0.30544690813667313,False
+Responder vs Non-responder,patient,Mann-Whitney,pDC,Responder,Non-responder,10,18,0.0011,0.0121,38.5,0.01400798057039205,0.04202394171117615,True
+Responder vs Non-responder,biopsy,Mann-Whitney,CD8 memory-like,Responder,Non-responder,17,31,0.1642,0.1775,272.0,0.8630793765712089,0.8630793765712089,False
+Responder vs Non-responder,biopsy,Mann-Whitney,CD8 exhausted,Responder,Non-responder,17,31,0.0469,0.0714,149.0,0.013991089597485353,0.026152507297569048,True
+Responder vs Non-responder,biopsy,Mann-Whitney,CD4 T conv,Responder,Non-responder,17,31,0.3863,0.338,331.0,0.14865024198841711,0.22297536298262569,False
+Responder vs Non-responder,biopsy,Mann-Whitney,Treg,Responder,Non-responder,17,31,0.0418,0.0478,244.0,0.682096281768213,0.7673583169892397,False
+Responder vs Non-responder,biopsy,Mann-Whitney,Cycling T,Responder,Non-responder,17,31,0.018,0.0429,75.5,5.296397349635805e-05,0.0004766757614672225,True
+Responder vs Non-responder,biopsy,Mann-Whitney,NK,Responder,Non-responder,17,31,0.0863,0.0958,210.0,0.25323866563106123,0.3255925700970787,False
+Responder vs Non-responder,biopsy,Mann-Whitney,B,Responder,Non-responder,17,31,0.1522,0.0463,391.0,0.00618643915630122,0.01855931746890366,True
+Responder vs Non-responder,biopsy,Mann-Whitney,Macrophage/Mono,Responder,Non-responder,17,31,0.0178,0.0714,132.5,0.004893752603670331,0.01855931746890366,True
+Responder vs Non-responder,biopsy,Mann-Whitney,pDC,Responder,Non-responder,17,31,0.0049,0.0123,150.0,0.014529170720871693,0.026152507297569048,True
+Post vs Pre (paired),patient,Wilcoxon signed-rank,CD8 memory-like,Post,Pre,11,11,0.1551,0.178,22.0,0.365234375,0.6574218749999999,False
+Post vs Pre (paired),patient,Wilcoxon signed-rank,CD8 exhausted,Post,Pre,11,11,0.0606,0.0516,28.0,0.7001953125,0.7877197265625,False
+Post vs Pre (paired),patient,Wilcoxon signed-rank,CD4 T conv,Post,Pre,11,11,0.3445,0.3587,27.0,0.6376953125,0.7877197265625,False
+Post vs Pre (paired),patient,Wilcoxon signed-rank,Treg,Post,Pre,11,11,0.0572,0.0404,9.0,0.0322265625,0.2900390625,False
+Post vs Pre (paired),patient,Wilcoxon signed-rank,Cycling T,Post,Pre,11,11,0.0385,0.0397,19.0,0.240234375,0.6574218749999999,False
+Post vs Pre (paired),patient,Wilcoxon signed-rank,NK,Post,Pre,11,11,0.087,0.1194,17.0,0.1748046875,0.6574218749999999,False
+Post vs Pre (paired),patient,Wilcoxon signed-rank,B,Post,Pre,11,11,0.0659,0.0596,32.0,0.9658203125,0.9658203125,False
+Post vs Pre (paired),patient,Wilcoxon signed-rank,Macrophage/Mono,Post,Pre,11,11,0.0262,0.1026,22.0,0.365234375,0.6574218749999999,False
+Post vs Pre (paired),patient,Wilcoxon signed-rank,pDC,Post,Pre,11,11,0.0065,0.0135,28.0,0.7001953125,0.7877197265625,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,CD8 memory-like,Post,Pre,29,19,0.1629,0.1826,246.0,0.540944728650221,0.966367575853693,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,CD8 exhausted,Post,Pre,29,19,0.0535,0.0575,246.0,0.540944728650221,0.966367575853693,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,CD4 T conv,Post,Pre,29,19,0.338,0.4029,234.0,0.38738362371714163,0.966367575853693,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,Treg,Post,Pre,29,19,0.0478,0.0418,296.5,0.6655892207109999,0.966367575853693,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,Cycling T,Post,Pre,29,19,0.0392,0.0269,308.0,0.4998864987886321,0.966367575853693,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,NK,Post,Pre,29,19,0.0958,0.0894,280.0,0.9327948829359016,0.966367575853693,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,B,Post,Pre,29,19,0.0704,0.074,278.0,0.966367575853693,0.966367575853693,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,Macrophage/Mono,Post,Pre,29,19,0.0463,0.0359,311.0,0.4604665761480272,0.966367575853693,False
+Post vs Pre (unpaired),biopsy,Mann-Whitney,pDC,Post,Pre,29,19,0.0069,0.0127,269.0,0.8990136789531988,0.966367575853693,False
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,CD8 memory-like,Responder,Non-responder,8,16,0.198,0.1837,69.0,0.7874627279661603,0.7874627279661603,False
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,CD8 exhausted,Responder,Non-responder,8,16,0.043,0.0755,30.0,0.038231283082541666,0.068816309548575,False
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,CD4 T conv,Responder,Non-responder,8,16,0.4096,0.3579,80.0,0.3502789368989395,0.4503586331557794,False
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,Treg,Responder,Non-responder,8,16,0.038,0.04,58.0,0.741723331035486,0.7874627279661603,False
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,Cycling T,Responder,Non-responder,8,16,0.0198,0.0411,5.0,0.00033946541625745505,0.0030551887463170957,True
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,NK,Responder,Non-responder,8,16,0.0526,0.1052,25.0,0.015905453784037713,0.04024544858879439,True
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,B,Responder,Non-responder,8,16,0.1455,0.0423,112.0,0.0021618799381620756,0.009728459721729341,True
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,Macrophage/Mono,Responder,Non-responder,8,16,0.0284,0.0784,31.0,0.04637727997929651,0.06956591996894478,False
+Responder vs Non-responder,patient (unsorted biopsies only),Mann-Whitney,pDC,Responder,Non-responder,8,16,0.0011,0.0121,25.0,0.017886866039464173,0.04024544858879439,True
+Responder vs Non-responder,patient,Mann-Whitney,CD8 memory-like : CD8 exhausted ratio,Responder,Non-responder,10,18,3.9426,2.0743,121.0,0.14358693492238297,0.14358693492238297,False
+Responder vs Non-responder,biopsy,Mann-Whitney,CD8 memory-like : CD8 exhausted ratio,Responder,Non-responder,17,30,4.0,2.1056,351.0,0.03445978213343625,0.03445978213343625,True

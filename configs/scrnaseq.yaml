@@ -97,13 +97,23 @@ annotation:
                     MZB1, JCHAIN, CD14, LYZ, C1QA, TYROBP, LILRA4, IL3RA, IRF8]
 
 composition:
-  # Primary unit of analysis. "patient" collapses the Pre/Post biopsies of a
-  # patient into one observation; "biopsy" reproduces the example's unit and
-  # is reported alongside for comparison. See DECISIONS.md.
+  # Primary unit of analysis. "patient" averages a patient's biopsy
+  # proportions into one observation; "biopsy" reproduces the reference
+  # example's unit and is reported alongside it. See DECISIONS.md.
   primary_unit: patient
   secondary_unit: biopsy
+  # Four patients (P1, P4, P5, P28) carry contradictory Responder /
+  # Non-responder labels across their own biopsies, because response in this
+  # dataset is recorded per lesion. They have no defined patient-level label
+  # and are excluded from the patient-level response comparison only.
+  drop_label_inconsistent_patients: true
   min_cells_per_sample: 20
-  test: mannwhitneyu
+  # Response: two independent groups of patients.
+  response_test: mannwhitneyu
+  # Timepoint: paired within the patients biopsied both before and during
+  # treatment, which is a far stronger contrast than pooling Pre against Post
+  # across different people.
+  timepoint_test: wilcoxon_signed_rank
   multiple_testing: fdr_bh
   alpha: 0.05
   ratio_numerator: CD8 memory-like

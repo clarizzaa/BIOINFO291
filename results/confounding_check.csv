@@ -1,0 +1,6 @@
+variable,test,statistic,dof,p,n_biopsies,detail
+therapy,chi-square,5.456,2.0,0.06534520800106156,48,anti-CTLA4: 1/1; anti-CTLA4+PD1: 4/7; anti-PD1: 26/9
+timepoint,chi-square,1.194,1.0,0.27446200617897987,48,Post: 21/8; Pre: 10/9
+sort_fractions,chi-square,3.864,2.0,0.14482474005392199,48,T_enriched+unsorted: 5/2; myeloid_enriched+unsorted: 0/2; unsorted: 26/13
+n_cells_per_biopsy,Mann-Whitney,202.0,,0.18843472952660456,48,median Responder 333 vs Non-responder 349
+biopsies_per_patient,none (structural),,,,48,32 patients; 1 biopsies: 19 patients; 2 biopsies: 10 patients; 3 biopsies: 3 patients
