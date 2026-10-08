@@ -24,6 +24,39 @@ Reason:       Single-cell matrices are too large for a git repository, and a
               git-lfs adds a dependency the grader would also need.
 Affects:      .gitignore, data/metadata/SOURCES.md
 
+## 2026-10-08  Hierarchical cluster annotation, calibrated within each level
+Decision:     Label clusters (not cells) in three levels - compartment, then
+              subset within the T compartment, then CD8 state - z-scoring each
+              marker panel only across the clusters still in contention at
+              that level. NK is a level-1 compartment defined by KLRF1, KLRD1
+              and NCAM1.
+Alternatives: A single flat argmax over nine lineage panels, as first
+              implemented and as the reference example does; per-cell gene-set
+              scoring with `sc.tl.score_genes`.
+Reason:       The flat version was tried and was wrong in three ways, each
+              traceable to comparing panels standardised over all 28 clusters.
+              (1) Clusters 5 and 11 were called NK on NKG7 and GNLY, which are
+              cytotoxicity genes shared with effector CD8 T cells; both have
+              CD3D ~7.3 and KLRF1 <0.25 and are T cells. (2) The true NK
+              cluster was lost: NK cells are CD3-negative, so a combined
+              "T/NK" compartment keyed on CD3 excluded it and it fell through
+              as Unassigned. (3) The CD8 memory/exhausted split came out 1
+              versus 8 because the two state panels sit on different baselines
+              when standardised across every cluster, including B and myeloid.
+              Calibrating within the contested set fixes all three and leaves
+              no cluster unassigned.
+              CD8 states are assigned per cluster rather than per cell: the
+              memory-exhaustion axis is a continuum, and a per-cell cut places
+              a hard boundary in the middle of it that the graph does not
+              support.
+Caveat:       CD4 mRNA is captured poorly relative to CD8A, so the CD4/CD8
+              boundary rests on relative, not absolute, panel scores. CD4
+              T conv is the largest population (34.6%) and may absorb some
+              weakly-labelled CD8 cells.
+Affects:      configs/scrnaseq.yaml (annotation.*), workflows/04_annotate.py,
+              results/cluster_annotation.csv, figures/umap_celltypes.png,
+              figures/marker_heatmap.png, figures/marker_dotplot.png
+
 ## 2026-10-08  QC thresholds, and mitochondrial content computed in TPM space
 Decision:     Remove cells with >=40% mitochondrial TPM and genes detected in
               fewer than 3 cells. Do not apply a minimum-genes-per-cell

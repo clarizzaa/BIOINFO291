@@ -48,24 +48,53 @@ cluster:
   batch_key: patient
 
 annotation:
-  # Canonical lineage markers. Cluster labels are assigned by mean z-scored
-  # expression of these panels, then checked against the marker table.
-  markers:
-    CD8 T:            [CD8A, CD8B, CD3D, CD3E]
-    CD4 T conv:       [CD4, IL7R, TRAC, CD3D]
-    Treg:             [FOXP3, IL2RA, CTLA4, TNFRSF4, TNFRSF18]
-    Cycling T:        [MKI67, TOP2A, STMN1, TUBA1B]
-    NK:               [NKG7, GNLY, KLRF1, KLRD1]
-    B:                [MS4A1, CD79A, CD79B, CD19, IGKC]
-    Plasma:           [MZB1, JCHAIN, XBP1, DERL3]
-    Macrophage/Mono:  [CD14, LYZ, C1QA, TYROBP, FCER1G]
-    pDC:              [LILRA4, IL3RA, PLD4, IRF8]
-  # CD8 cells are further split into two states by per-cell gene-set score.
+  # Clusters are labelled hierarchically. Every comparison is z-scored across
+  # only the clusters still in contention at that level, because a score
+  # calibrated on all 28 clusters is not comparable between two panels: the
+  # cytotoxicity genes shared by NK and CD8 cells, and the poor capture of CD4
+  # mRNA relative to CD8A, both mislead a single flat argmax.
+
+  # Level 1 - compartment. Panels share no genes with each other.
+  # NK is a compartment, not a subset of a "T/NK" group: NK cells are
+  # CD3-negative, so a compartment defined by CD3 excludes them entirely and
+  # the true NK cluster falls through unassigned. Their receptor genes
+  # separate them cleanly (KLRF1 is >4 in the NK cluster, <0.25 in every T
+  # cluster). NKG7 and GNLY are deliberately absent: they are cytotoxicity
+  # genes equally expressed by effector CD8 T cells.
+  compartments:
+    Macrophage/Mono:  [LYZ, CD14, C1QA, TYROBP, FCER1G, AIF1]
+    pDC:              [LILRA4, IL3RA, PLD4, SERPINF1]
+    B:                [MS4A1, CD79A, CD79B, CD19]
+    Plasma:           [MZB1, JCHAIN, DERL3, XBP1]
+    NK:               [KLRF1, KLRD1, NCAM1]
+    T:                [CD3D, CD3E, TRAC, CD2]
+
+  # Level 2 - subsets within the T compartment, applied in this order.
+  lymphoid:
+    cycling:  [MKI67, TOP2A, STMN1, TUBA1B]
+    treg:     [FOXP3, IL2RA, TNFRSF4, TNFRSF18]
+    cd8:      [CD8A, CD8B]
+    cd4:      [CD4, CD40LG]
+
+  # Level 3 - CD8 state, z-scored across the CD8 clusters only.
   cd8_states:
     memory:    [IL7R, TCF7, CCR7, SELL, LEF1, GZMK]
-    exhausted: [PDCD1, HAVCR2, LAG3, TIGIT, TOX, CTLA4]
+    exhausted: [PDCD1, HAVCR2, LAG3, TIGIT, TOX, ENTPD1]
+
+  thresholds:
+    # Cycling and Treg are called only on a clear positive signal.
+    cycling_z: 1.0
+    treg_z: 1.0
+    # Compartment assignment must clear this z floor, else "Unassigned".
+    min_compartment_z: 0.25
+
   marker_test: wilcoxon
   n_markers_reported: 50
+  # Genes shown in the marker heatmap and dot plot, in display order.
+  display_markers: [CD3D, CD8A, CD8B, IL7R, TCF7, CCR7, SELL, LEF1, GZMK,
+                    PDCD1, HAVCR2, LAG3, TIGIT, TOX, CD4, FOXP3, IL2RA, CTLA4,
+                    MKI67, TOP2A, NKG7, GNLY, KLRF1, MS4A1, CD79A, IGKC,
+                    MZB1, JCHAIN, CD14, LYZ, C1QA, TYROBP, LILRA4, IL3RA, IRF8]
 
 composition:
   # Primary unit of analysis. "patient" collapses the Pre/Post biopsies of a
