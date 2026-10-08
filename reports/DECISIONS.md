@@ -24,6 +24,36 @@ Reason:       Single-cell matrices are too large for a git repository, and a
               git-lfs adds a dependency the grader would also need.
 Affects:      .gitignore, data/metadata/SOURCES.md
 
+## 2026-10-08  Signature performance is cross-validated, and benchmarked
+Decision:     Derive the responder signature from per-patient CD8 pseudobulk
+              and report leave-one-out cross-validated AUC as the headline
+              number, with the in-sample AUC and an independently published
+              signature shown alongside. Exclude ribosomal, mitochondrial,
+              pseudogene and housekeeping families from signature membership.
+Alternatives: Reporting the in-sample AUC, which is what ranking genes on all
+              samples and scoring those same samples produces.
+Reason:       Choosing the most different genes on a set of samples and then
+              scoring those samples measures fit, not generalisation. Within
+              each fold the signature is re-derived on the other patients
+              only, so the held-out score is honest. The gap is real but
+              moderate: 0.96 in-sample versus 0.88 cross-validated at patient
+              level (0.91 versus 0.84 at biopsy level). The published
+              Sade-Feldman signature, which never saw this analysis, reaches
+              0.89 at patient level, which corroborates the biology rather
+              than the fitting procedure.
+              Excluded gene families track library composition and cell size
+              rather than T-cell state, and would otherwise dominate a
+              difference-of-means ranking.
+Note:         No single gene survives BH correction across 41,744 genes at
+              patient level (minimum padj 0.122) although the rank test's
+              floor at n = 10 vs 18 is 1.5e-7, so this is a real absence of
+              single-gene signal rather than a resolution limit. The
+              aggregate 25-gene score still separates the groups at AUC 0.88:
+              the response signal is distributed, not concentrated.
+Affects:      configs/scrnaseq.yaml (pseudobulk_de.*, benchmark_signature.*),
+              workflows/06_pseudobulk_de.py, results/signature_auc.csv,
+              results/signature_genes.json, figures/signature_auc.png
+
 ## 2026-10-08  The patient is the experimental unit, not the biopsy
 Decision:     Test composition on per-patient mean proportions (n = 28), and
               report the biopsy-level test (n = 48) beside it. Exclude the

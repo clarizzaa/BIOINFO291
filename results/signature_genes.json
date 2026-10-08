@@ -1,0 +1,129 @@
+{
+  "responder_up": [
+    "IL7R",
+    "CCR7",
+    "GPR183",
+    "CD55",
+    "ATM",
+    "TCF7",
+    "RGPD5",
+    "FOXP1",
+    "SELL",
+    "MGAT4A",
+    "PER1",
+    "EPB41",
+    "CD44",
+    "PLAC8",
+    "LEF1",
+    "TMEM50B",
+    "AMICA1",
+    "NR4A1",
+    "SORL1",
+    "EGR1"
+  ],
+  "responder_down": [
+    "NKG7",
+    "GZMA",
+    "GZMB",
+    "PRF1",
+    "CTSW",
+    "PSMB9",
+    "GZMH",
+    "CLIC1",
+    "HLA-DPA1",
+    "MT2A",
+    "STAT1",
+    "APOBEC3G",
+    "CCL4",
+    "CST7",
+    "LSP1",
+    "GBP5",
+    "IL32",
+    "CCL5",
+    "IFITM1",
+    "PPP1CA"
+  ],
+  "benchmark_responder": [
+    "TCF7",
+    "CCR7",
+    "IL7R",
+    "SELL",
+    "LEF1",
+    "CD27",
+    "CD28",
+    "FOXP1",
+    "GPR183",
+    "LTB"
+  ],
+  "benchmark_non_responder": [
+    "PDCD1",
+    "HAVCR2",
+    "LAG3",
+    "TIGIT",
+    "CD38",
+    "GZMB",
+    "PRF1",
+    "NKG7",
+    "CCL4",
+    "CCL5"
+  ],
+  "unit": "patient",
+  "auc": [
+    {
+      "unit": "patient",
+      "signature": "data-driven, leave-one-out CV",
+      "n_units": 28,
+      "n_responder": 10,
+      "auc": 0.883
+    },
+    {
+      "unit": "patient",
+      "signature": "data-driven, in-sample (circular)",
+      "n_units": 28,
+      "n_responder": 10,
+      "auc": 0.956
+    },
+    {
+      "unit": "patient",
+      "signature": "published Sade-Feldman signature",
+      "n_units": 28,
+      "n_responder": 10,
+      "auc": 0.894
+    },
+    {
+      "unit": "patient",
+      "signature": "CD8 memory : exhausted ratio",
+      "n_units": 28,
+      "n_responder": 10,
+      "auc": 0.672
+    },
+    {
+      "unit": "biopsy",
+      "signature": "data-driven, leave-one-out CV",
+      "n_units": 47,
+      "n_responder": 17,
+      "auc": 0.843
+    },
+    {
+      "unit": "biopsy",
+      "signature": "data-driven, in-sample (circular)",
+      "n_units": 47,
+      "n_responder": 17,
+      "auc": 0.912
+    },
+    {
+      "unit": "biopsy",
+      "signature": "published Sade-Feldman signature",
+      "n_units": 47,
+      "n_responder": 17,
+      "auc": 0.814
+    },
+    {
+      "unit": "biopsy",
+      "signature": "CD8 memory : exhausted ratio",
+      "n_units": 47,
+      "n_responder": 17,
+      "auc": 0.688
+    }
+  ]
+}

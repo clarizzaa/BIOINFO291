@@ -121,6 +121,12 @@ composition:
 
 pseudobulk_de:
   compartment: CD8
+  # Populations making up the CD8 compartment, as labelled in step 04.
+  compartment_populations: [CD8 memory-like, CD8 exhausted]
+  # Same two units as the composition step: patients are the primary unit,
+  # biopsies reproduce the reference example's evaluation.
+  primary_unit: patient
+  secondary_unit: biopsy
   min_cd8_cells_per_sample: 10
   min_cells_per_sample_all: 20
   test: mannwhitneyu

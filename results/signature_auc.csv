@@ -1,0 +1,9 @@
+unit,signature,n_units,n_responder,auc
+patient,"data-driven, leave-one-out CV",28,10,0.883
+patient,"data-driven, in-sample (circular)",28,10,0.956
+patient,published Sade-Feldman signature,28,10,0.894
+patient,CD8 memory : exhausted ratio,28,10,0.672
+biopsy,"data-driven, leave-one-out CV",47,17,0.843
+biopsy,"data-driven, in-sample (circular)",47,17,0.912
+biopsy,published Sade-Feldman signature,47,17,0.814
+biopsy,CD8 memory : exhausted ratio,47,17,0.688
