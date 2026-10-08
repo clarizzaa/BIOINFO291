@@ -175,3 +175,114 @@ Reason:       Claude Science supports neither CLAUDE.md nor a rules folder, so
               the rules must be injected through project settings. Duplicating
               them guarantees drift; a pointer does not.
 Affects:      WORKSPACE.md, AGENTS.md, CLAUDE.md, docs/claude-science-setup.md
+
+## 2026-10-08  Figure standards as one numbered rule document, in two tiers
+Decision:     Write the lecture-2 visualization principles as numbered rules in
+              `docs/figure-contract.md`, split into twelve enforced rules
+              (C1-C12) and a legibility appendix (A1-A8). Both the generative
+              skill and the review subagent cite these identifiers rather than
+              restating the rules.
+Alternatives: A single flat list of ~23 equally weighted rules; prose guidance
+              with no identifiers.
+Reason:       Same argument as WORKSPACE.md: rules stated in two places drift.
+              The two tiers exist because an agent holding equally weighted
+              rules reports "axis missing units" at the same volume as "n is
+              the row count, not the unit count"; review then reads as lint and
+              stops being read. An enforced rule is one whose violation makes a
+              reader believe something false.
+Affects:      docs/figure-contract.md, skills/figure-contract/,
+              agents/figure-reviewer/
+
+## 2026-10-08  Generation and review are separate agents
+Decision:     The generative half is a skill (`skills/figure-contract/`); the
+              review half is a distinct agent profile
+              (`agents/figure-reviewer/`, FIGURE_REVIEWER) that reports and
+              does not edit.
+Alternatives: One skill containing both a how-to and a self-check section.
+Reason:       A self-check performed by the author of a figure is performed by
+              something that already knows what the figure meant; the contract
+              is owed to a reader who does not. A reviewer that can silently
+              fix a problem also leaves no record that the problem existed, so
+              the review loop becomes unauditable.
+Limitation:   The no-editing rule is enforced by the profile's system prompt,
+              not by the harness: the Claude Science profile API exposes a
+              per-tool blocklist only for connector tools, so core tools such
+              as `edit_file` cannot be withheld. Recorded in
+              docs/claude-science-setup.md, known gaps.
+Affects:      agents/figure-reviewer/, docs/claude-science-setup.md
+
+## 2026-10-08  Every figure carries a machine-readable sidecar
+Decision:     Each figure writes `figures/<name>.contract.json` declaring the
+              question, claim, experimental unit, n per unit, error-bar
+              definition, transformations, axes, colour mapping, exclusions,
+              missing-value treatment, source script, config and git SHA.
+              `save_figure()` refuses to write a PNG whose declaration is
+              incomplete, and a pytest check enforces the same at the repo
+              level.
+Alternatives: Review the image alone; keep the same information in the figure
+              caption only.
+Reason:       Review of an image alone is a matter of opinion about what the
+              figure "looks like it is claiming". A declaration makes the check
+              mechanical: the reviewer compares the drawing against what the
+              figure says about itself, and a false declaration is a finding in
+              its own right. Making `save_figure` the only sanctioned save path
+              means a figure cannot exist in this repository without one.
+Affects:      skills/figure-contract/kernel.py, docs/figure-contract.md,
+              figures/, tests/
+
+## 2026-10-08  Review is two-pass; the script cannot rescue the figure
+Decision:     The reviewer reaches a verdict from the rendered image and the
+              sidecar alone, writes it down, and only then reads the generating
+              script - solely to make each fix specific to a line.
+Alternatives: Give the reviewer everything at once; or withhold the script
+              entirely.
+Reason:       The image and sidecar are what a reader actually receives, so a
+              verdict formed from them tests the thing that matters. Withholding
+              the script entirely would make the feedback vague. Allowing the
+              script to change the verdict would let a figure be defended by
+              material the reader never sees; a figure that needs its source
+              code to be understood is not self-describing, which is itself
+              worth reporting.
+Affects:      agents/figure-reviewer/AGENT.md
+
+## 2026-10-08  The styling floor is in the repository, not a platform skill
+Decision:     `skills/figure-contract/kernel.py` carries its own small rcParams
+              block (`contract_style`) rather than depending on the
+              platform-provided `figure-style` skill.
+Alternatives: Call the platform skill's `apply_figure_style()` and keep this
+              skill purely about the contract.
+Reason:       WORKSPACE.md requires that a stranger with this repository can
+              reproduce every figure. A script that calls a function living in
+              a web-configured platform skill does not regenerate on a clean
+              checkout. The styling floor is deliberately thin so the skill
+              remains mostly lecture principles.
+Affects:      skills/figure-contract/kernel.py, skills/figure-contract/SKILL.md
+
+## 2026-10-08  ChickWeight for week 2; the chick is the experimental unit
+Decision:     Use `datasets::ChickWeight` (578 measurements, 50 chicks, diets of
+              20/10/10/10) for the week-2 figures, exported with provenance by
+              `workflows/20_get_chickweight.R`. The experimental unit is the
+              chick; repeated measurements of one chick are not replicates.
+Alternatives: The week-1 melanoma data (analysis not yet complete); Palmer
+              Penguins (no repeated measures, no attrition).
+Reason:       The dataset exercises nine of the twelve enforced rules without
+              contrivance. In particular the attrition is not random across
+              groups - five chicks never reach day 21, four of them on diet 1
+              and one on diet 4, none on diets 2 or 3 - so restricting to the
+              final measurement silently drops a fifth of diet 1 and nothing
+              from two other diets. That makes C11 a real finding rather than a
+              teaching exercise.
+Affects:      configs/chickweight.yaml, workflows/2*, data/raw/chickweight.csv,
+              data/metadata/chickweight_provenance.txt
+
+## 2026-10-08  The "show every observation" threshold is a config value
+Decision:     C9's threshold lives in `configs/chickweight.yaml` as
+              `contract.show_all_observations_below_n: 25`, not as a number in
+              the rule text or in a script.
+Alternatives: State a fixed number in docs/figure-contract.md; leave it to the
+              reviewer's judgement.
+Reason:       WORKSPACE.md rule 3 says code reads the number and code does not
+              contain it; a threshold buried in prose is the same violation one
+              layer up. A declared parameter is also one the reviewer can check
+              a figure against.
+Affects:      configs/chickweight.yaml, docs/figure-contract.md
