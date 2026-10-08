@@ -108,6 +108,50 @@ def strip_with_median(ax, groups: dict[str, np.ndarray], colors: dict[str, str],
     ax.margins(y=0.08)
 
 
+def embedding(ax, xy, labels, colors=None, title="", legend=False,
+              annotate=False, size=1.6, seed=0) -> None:
+    """Scatter of a 2-D embedding, styled per the project's figure rules.
+
+    Embeddings carry no meaningful units, so ticks and spines are dropped and
+    a corner arrow pair names the axes instead. Cluster identities are written
+    at their centroid when ``annotate`` is set, which keeps the panel readable
+    without a legend listing twenty entries.
+    """
+    labels = np.asarray(labels)
+    order = sorted(set(labels.tolist()))
+    colors = colors or {}
+    rng = np.random.default_rng(seed)
+    shuffle = rng.permutation(len(labels))  # avoid one group painting over another
+    xs, ys, ls = xy[shuffle, 0], xy[shuffle, 1], labels[shuffle]
+    for name in order:
+        m = ls == name
+        ax.scatter(xs[m], ys[m], s=size, alpha=0.75, linewidths=0,
+                   color=colors.get(name, None), label=str(name), rasterized=True)
+    if annotate:
+        for name in order:
+            m = labels == name
+            ax.text(np.median(xy[m, 0]), np.median(xy[m, 1]), str(name),
+                    fontsize=TINY, ha="center", va="center", zorder=6,
+                    bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.72))
+    ax.set_xticks([]); ax.set_yticks([])
+    for s in ax.spines.values():
+        s.set_visible(False)
+    ax.set_title(title)
+    x0, y0 = ax.get_xlim()[0], ax.get_ylim()[0]
+    dx = 0.14 * (ax.get_xlim()[1] - x0)
+    ax.annotate("", xy=(x0 + dx, y0), xytext=(x0, y0),
+                arrowprops=dict(arrowstyle="->", lw=0.8, color=GREY))
+    ax.annotate("", xy=(x0, y0 + dx), xytext=(x0, y0),
+                arrowprops=dict(arrowstyle="->", lw=0.8, color=GREY))
+    ax.text(x0 + dx * 1.1, y0, "UMAP1", fontsize=TINY, color=GREY, va="center")
+    ax.text(x0, y0 + dx * 1.12, "UMAP2", fontsize=TINY, color=GREY, ha="left", rotation=90)
+    if legend:
+        leg = ax.legend(markerscale=5, loc="center left", bbox_to_anchor=(1.0, 0.5),
+                        handletextpad=0.3, labelspacing=0.25)
+        for h in leg.legend_handles:
+            h.set_alpha(1.0)
+
+
 def stars(p: float) -> str:
     """Significance marker used consistently across figures."""
     if not np.isfinite(p):
