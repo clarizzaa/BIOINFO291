@@ -1,0 +1,38 @@
+{
+  "figure": "final_weight_bad.png",
+  "question": "Does final weight differ by diet?",
+  "claim": "Diet 3 improves chick growth",
+  "experimental_unit": "measurement",
+  "n_per_group": {
+    "1": 220,
+    "2": 120,
+    "3": 120,
+    "4": 118
+  },
+  "n_observations": 578,
+  "error_bar": "standard error",
+  "transformations": [],
+  "axes": {
+    "y": {
+      "variable": "weight",
+      "units": null,
+      "limits": [
+        95,
+        150
+      ],
+      "baseline_zero": false
+    }
+  },
+  "color": {
+    "variable": "diet",
+    "scale": "jet",
+    "palette": "jet",
+    "redundant_with": null
+  },
+  "excluded": "none",
+  "missing": "none",
+  "source_script": "workflows/24_fig_final_weight_bad.py",
+  "config": "configs/chickweight.yaml",
+  "git_sha": "n/a - counterexample, written by hand",
+  "_note": "Deliberate counterexample for the figure-contract review demonstration. Not a result. See the module docstring."
+}
