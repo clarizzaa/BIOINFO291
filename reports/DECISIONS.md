@@ -286,3 +286,111 @@ Reason:       WORKSPACE.md rule 3 says code reads the number and code does not
               layer up. A declared parameter is also one the reviewer can check
               a figure against.
 Affects:      configs/chickweight.yaml, docs/figure-contract.md
+
+## 2026-10-15  Statistical review is a contract, a skill, and a non-editing agent
+Decision:     Week 3 mirrors the week-2 structure exactly. The rules live in
+              `docs/statistical-review.md` as sixteen enforced rules (S1-S16)
+              plus seven reporting items (R1-R7); the procedure for running a
+              review lives in `skills/statistical-review/`; the verdict is
+              reached by a separate subagent, `agents/statistical-reviewer/`,
+              that cannot edit files. Neither the skill nor the agent restates
+              a rule; both cite its identifier.
+Alternatives: One skill that both runs and judges the review; a single prose
+              rubric with no machine-readable findings.
+Reason:       The same argument as the figure contract. The author of an
+              analysis knows what they meant and the reviewer must not; a
+              reviewer that can quietly fix a problem leaves no record that the
+              problem existed. Keeping the rules in one numbered document is
+              what lets a finding be cited rather than argued.
+Affects:      docs/statistical-review.md, configs/statreview.yaml,
+              skills/statistical-review/, agents/statistical-reviewer/
+
+## 2026-10-15  A blocking finding must be demonstrated by recomputation
+Decision:     The standard of proof in `docs/statistical-review.md` is
+              deliberately asymmetric: a claim is reported as *unsupported*
+              only when recomputation from the deposited data shows it, while a
+              claim is reported as *unverifiable* on the absence of what a rule
+              requires. A paper whose data cannot be obtained is not reviewed.
+Alternatives: Allow blocking findings from the text alone, so any paper could
+              be reviewed; review from the PDF and label the uncertainty.
+Reason:       The assignment's input is the paper *and* its data, and a review
+              that asserts a result is wrong without testing it is the same
+              error it is auditing. This also makes data availability a gating
+              check in `configs/statreview.yaml` rather than an afterthought.
+Affects:      docs/statistical-review.md, configs/statreview.yaml,
+              workflows/30_fetch_papers.py
+
+## 2026-10-15  Wang & Horowitz 2026 as the reference review
+Decision:     The first review is Wang & Horowitz, *Scientific Reports*
+              16:11176 (2026), "Dogs distinguish conspecific emotional
+              chemosignals", with the Dryad deposit doi:10.5061/dryad.bzkh189pt.
+Alternatives: The other four cat/dog papers suggested in lecture 3.
+Reason:       The deposit includes the authors' own analysis script, so the
+              two-pass protocol can actually be exercised: a verdict from the
+              paper and data, then the script for remediation. The paper also
+              exercises the unit rules without contrivance - Part 2 enrolled 24
+              analyzed dogs (9 joy, 9 stress, 6 blank) but its condition
+              comparisons were run on 12 per-condition sample-point means, with
+              the dogs averaged away and the time bins treated as independent.
+Affects:      configs/statreview.yaml, workflows/30_*, workflows/31_*,
+              reports/statistical_reviews/wang2026-conspecific-odors/
+
+## 2026-10-15  Dryad will not serve this deposit to an automated client
+Decision:     `workflows/30_fetch_papers.py` resolves the Dryad file list over
+              the API but the file bytes are placed in `data/raw/papers/<slug>/`
+              by hand. The checksums in `data/metadata/SOURCES.md` are what
+              pins the files, not the download.
+Alternatives: Spoof a browser user-agent and session to defeat the block.
+Reason:       Dryad's API download route returns 401 ("must have current bearer
+              token") and its `/downloads/file_stream/` route returns 403 to
+              non-browser clients, while the dataset landing page is public.
+              Defeating a site's bot protection is not a reproducibility
+              strategy, and a recorded SHA-256 makes a hand-placed file exactly
+              as verifiable as a downloaded one.
+Affects:      workflows/30_fetch_papers.py, data/metadata/SOURCES.md
+
+## 2026-10-15  Review figures go through FIGURE_REVIEWER before a review ships
+Decision:     `docs/statistical-review.md` requires each review figure to pass
+              `agents/figure-reviewer/` before the review is published. Round-1
+              verdicts are kept in `reports/figure_reviews/<slug>_<figure>.roundN.json`
+              alongside the week-2 ChickWeight verdicts.
+Alternatives: Trust the author of the review to apply the figure contract to
+              their own figures, since they wrote the statistical contract too.
+Reason:       The first render of both Wang & Horowitz figures was blocked, and
+              one finding was substantive rather than cosmetic: the headline of
+              `unit_of_analysis.png` stated the p-value change in the opposite
+              direction to the one the panels showed. The author of a figure
+              knows what they meant; that is precisely why they are the wrong
+              reader to check it. A reviewer that also wrote the rules it is
+              checking is not an independent check.
+Affects:      docs/statistical-review.md, workflows/33_fig_wang2026.py,
+              reports/figure_reviews/wang2026_*.json
+
+## 2026-10-15  Every recomputation table carries a stable test_id
+Decision:     Each row of every table written by `workflows/32_recompute_wang2026.py`
+              carries a `test_id` (e.g. `p2.omnibus.owner`), and downstream steps
+              join on it rather than on a human-readable label.
+Alternatives: Join on the outcome name and test as printed.
+Reason:       The first draft of `what_survives.png` joined two tables on their
+              label columns. The labels were written differently in each
+              ("owner" versus "owner (Kruskal-Wallis)"), the inner join silently
+              dropped 12 of the 39 tests, and the figure's sidecar declared 11
+              Part 2 tests where there were 23 - while the title still claimed a
+              correction over 39. A silent row drop in a figure about
+              multiple-testing corrections is the exact failure the figure was
+              drawn to expose.
+Affects:      workflows/32_recompute_wang2026.py, workflows/33_fig_wang2026.py,
+              skills/statistical-review/kernel.py (collect_family raises on a
+              missing or duplicate id)
+
+## 2026-10-15  Review numbers are produced by a workflow step, never in session
+Decision:     The Wang & Horowitz recomputation was moved out of an interactive
+              session into `workflows/32_recompute_wang2026.py`, which rewrites
+              all nine tables from `data/raw/` on every run.
+Alternatives: Keep the interactive results, since they were already computed
+              and agreed with the paper.
+Reason:       WORKSPACE.md rule 8. A review that asserts a paper is not
+              reproducible has no standing if its own numbers are not. The
+              session that produced the first set of tables cannot be rerun by
+              a stranger with this repository.
+Affects:      workflows/32_recompute_wang2026.py, results/statistical_reviews/

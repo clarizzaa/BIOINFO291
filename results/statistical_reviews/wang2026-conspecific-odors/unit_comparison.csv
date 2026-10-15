@@ -1,0 +1,9 @@
+test_id,outcome,n_bins_per_group,p_on_bins,n_dogs_per_group,p_on_dogs,sig_on_bins,sig_on_dogs
+p2.omnibus.stressbehav,stressbehav,12/12/12,2.8037068125926036e-05,6/9/9,0.10594366571670435,True,False
+p2.omnibus.joybehav,joybehav,12/12/12,6.2068458536524346e-06,6/9/9,0.03826813769793527,True,True
+p2.omnibus.owner,owner,12/12/12,9.610737821636655e-06,6/9/9,0.23052115492869468,True,False
+p2.omnibus.box,box,12/12/12,0.3665254810329868,6/9/9,0.8693348372179062,False,False
+p2.omnibus.stranger,stranger,12/12/12,0.015909923414210155,6/9/9,0.43683030191895966,True,False
+p2.omnibus.upright,upright,12/12/12,0.00021516981087747066,6/9/9,0.1158435586237786,True,False
+p2.omnibus.sit,sit,12/12/12,0.07891995310375644,6/9/9,0.5721650878661579,False,False
+p2.omnibus.prone,prone,12/12/12,0.0004031150188140777,6/9/9,0.17909903072742545,True,False

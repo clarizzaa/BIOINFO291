@@ -49,12 +49,14 @@ section 4 describes.
 |---|---|---|
 | `figure-contract` | Make a figure that keeps the contract in `docs/figure-contract.md`: the twelve enforced rules, the helper functions that carry them, and the mandatory sidecar. Source: `skills/figure-contract/`. | 2026-10-08 |
 | `reproducible-workflow-step` | Add or revise a numbered analysis step under the `WORKSPACE.md` contract: the step template with its Inputs/Outputs/Env header, parameters into `configs/` first, filter counts recorded, the experimental-unit and confounding checks, a `DECISIONS.md` entry in the same commit, and a clean-rerun verification. Ships `scaffold_step`, `decision_entry` and `audit_steps`. Source: `skills/reproducible-workflow-step/`. | 2026-10-08 |
+| `statistical-review` | Review a paper's statistics against the paper's own deposited data, under the rules in `docs/statistical-review.md`: reproduce every reported statistic, recover the unit each test counted, count and correct the family, re-analyse, and state what survives. Ships `wilcox_test_R`, `sign_test`, `signrank_floor`, `permutation_floor`, `n_from_statistic`, `glm_p_rlike`, `collect_family`, `correct_family`, `reconcile_n` and `split_pasted_blocks`. Source: `skills/statistical-review/`. | 2026-10-15 |
 
 ## 3b. Agent profiles
 
 | Profile | Purpose | Access | Added |
 |---|---|---|---|
 | `FIGURE_REVIEWER` | Reviews a finished figure against `docs/figure-contract.md` and returns a structured verdict. Reports only; does not edit. Source: `agents/figure-reviewer/`. | Restricted: no skills, no connectors | 2026-10-08 |
+| `STATISTICAL_REVIEWER` | Reviews a paper's statistical claims against the paper's own deposited data under `docs/statistical-review.md`, in two passes, and returns a structured verdict. Demonstrates every blocking finding by recomputation. Reports only; does not edit or rerun. Source: `agents/statistical-reviewer/`. | Full: live skill catalogue and connectors, because it must load `statistical-review`, `figure-contract` and `pdf-explore` and read a paper PDF | 2026-10-15 |
 
 Applying a profile from its repository source:
 

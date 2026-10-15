@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "statistical-reviewer output",
+  "description": "Structured findings for one paper, per docs/statistical-review.md. One record per claim; the paper's verdict follows from the claims'.",
+  "type": "object",
+  "required": [
+    "paper",
+    "reviewable",
+    "verdict",
+    "reproduction",
+    "claims",
+    "findings_against_the_paper",
+    "rules_passed",
+    "not_checked"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "paper": {
+      "type": "object",
+      "required": [
+        "citation",
+        "paper_doi",
+        "data_doi"
+      ],
+      "properties": {
+        "citation": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "paper_doi": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "data_doi": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "reviewable": {
+      "type": "boolean",
+      "description": "false when the deposit could not be obtained; every other field is then empty and `not_checked` carries the reason."
+    },
+    "verdict": {
+      "enum": [
+        "ship",
+        "revise",
+        "blocked",
+        "not_reviewable"
+      ]
+    },
+    "reproduction": {
+      "type": "object",
+      "description": "Reported statistics reproduced from the deposit, before any judgement. Stated first because most papers are arithmetically perfect and the reader needs to know that.",
+      "required": [
+        "statistics_checked",
+        "statistics_reproduced",
+        "notes"
+      ],
+      "properties": {
+        "statistics_checked": {
+          "type": "integer"
+        },
+        "statistics_reproduced": {
+          "type": "integer"
+        },
+        "n_reconciles": {
+          "type": "boolean"
+        },
+        "software_conventions_resolved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Apparent discrepancies traced to an implementation convention rather than to the paper (R's one-tailed dunn.test, continuity correction, gaussian AIC, ...)."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "family": {
+      "type": "object",
+      "properties": {
+        "n_reported_tests": {
+          "type": "integer"
+        },
+        "is_lower_bound": {
+          "type": "boolean"
+        },
+        "lower_bound_reason": {
+          "type": "string"
+        },
+        "n_significant_as_published": {
+          "type": "integer"
+        },
+        "n_significant_after_bonferroni": {
+          "type": "integer"
+        },
+        "n_significant_after_BH": {
+          "type": "integer"
+        },
+        "n_significant_after_reanalysis": {
+          "type": "integer"
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "claim",
+          "location",
+          "test_as_stated",
+          "unit_used",
+          "unit_defensible",
+          "recomputed",
+          "agrees_with_paper",
+          "findings",
+          "verdict"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "claim": {
+            "type": "string",
+            "description": "the paper's assertion, verbatim"
+          },
+          "location": {
+            "type": "string"
+          },
+          "test_as_stated": {
+            "type": "string",
+            "description": "the test the paper names, with its reported statistic and p"
+          },
+          "unit_used": {
+            "type": "string",
+            "description": "the unit the test actually counted, and that n"
+          },
+          "unit_defensible": {
+            "type": "string",
+            "description": "the unit the claim requires, and that n"
+          },
+          "recomputed": {
+            "description": "statistic obtained from the deposit, or the string 'not recomputable' with the reason"
+          },
+          "agrees_with_paper": {
+            "type": [
+              "boolean",
+              "string"
+            ]
+          },
+          "reanalysis": {
+            "description": "result at the defensible unit with the family correction applied"
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/finding"
+            }
+          },
+          "verdict": {
+            "enum": [
+              "supported",
+              "weakened",
+              "unsupported"
+            ]
+          },
+          "supported_sentence": {
+            "type": "string",
+            "description": "for a supported or weakened claim, the sentence the data do support, written out"
+          }
+        }
+      }
+    },
+    "findings_against_the_paper": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      },
+      "description": "findings that attach to the paper as a whole rather than to one claim (family size, test selection, population, confounds)"
+    },
+    "rules_passed": {
+      "type": "object",
+      "description": "rule identifier -> what was checked and what was found. A rubric that only lists failures cannot be audited.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "not_checked": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "honestly, with the reason"
+    },
+    "caveats_on_this_review": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "where the review's own conclusions are close to a threshold or rest on an assumption"
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": [
+        "rule",
+        "severity",
+        "observed",
+        "fix"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "rule": {
+          "type": "string",
+          "description": "an S, C or R identifier"
+        },
+        "severity": {
+          "enum": [
+            "blocking",
+            "major",
+            "minor"
+          ]
+        },
+        "observed": {
+          "type": "string",
+          "description": "a number computed or a sentence read in the paper; never a restatement of the rule"
+        },
+        "fix": {
+          "type": "string",
+          "description": "the smallest change that satisfies the rule"
+        },
+        "demonstrated_by": {
+          "type": "string",
+          "description": "the table or figure that shows it; required for a blocking finding"
+        },
+        "script_only": {
+          "type": "boolean",
+          "description": "true when the finding was invisible until the authors' analysis script was read in pass 2"
+        },
+        "changed_no_conclusion": {
+          "type": "boolean",
+          "description": "true when the rule is broken but the outcome is unaffected"
+        }
+      }
+    }
+  }
+}

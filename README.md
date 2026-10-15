@@ -67,3 +67,25 @@ the top of the file. Checks on the repository's own rules:
 Analytical choices are logged in [reports/DECISIONS.md](reports/DECISIONS.md).
 Parameters are in `configs/`. Package versions are in `environment/`. Nothing
 that affects a result is left only in a conversation.
+
+## Week 3 — statistical review
+
+`docs/statistical-review.md` states the rules a paper's statistics are held to:
+sixteen enforced (S1–S16) and seven reporting items (R1–R7), derived from
+lecture 3. As with the figure contract, the rules have two halves that cite them
+and never restate them — `skills/statistical-review/` runs a review, and
+`agents/statistical-reviewer/` reaches a verdict without the ability to edit
+anything.
+
+A review takes a paper **and the data the paper was built from**: it reproduces
+every reported statistic, recovers the experimental unit each test actually
+counted, counts and corrects the family of tests, re-analyses at the defensible
+unit, and states what survives. A paper whose deposit cannot be obtained is not
+reviewed, because a blocking finding must be demonstrated by recomputation.
+
+    python workflows/30_fetch_papers.py <slug>        # register paper + deposit
+    python workflows/31_describe_deposit.py <slug>    # look before computing
+    python workflows/32_recompute_wang2026.py         # reproduce + re-analyse
+    python workflows/33_fig_wang2026.py               # review figures + sidecars
+
+Reviews are in `reports/statistical_reviews/`.

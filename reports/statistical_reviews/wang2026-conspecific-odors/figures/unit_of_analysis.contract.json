@@ -1,0 +1,43 @@
+{
+  "question": "Does proximity to the owner differ by odour condition, and does the answer depend on whether dogs or time bins are counted?",
+  "claim": "Averaging the 24 dogs into 12 time-bin means turns p = 0.23 into p = 9.6e-06",
+  "experimental_unit": "dog",
+  "n_per_group": {
+    "blank": 6,
+    "joy": 9,
+    "stress": 9
+  },
+  "n_observations": "left panel draws the 36 condition x time-bin means the published tests used ({'blank': 12, 'joy': 12, 'stress': 12}); right panel draws one point per dog",
+  "error_bar": "mean with 95% CI over dogs, n = {'blank': 6, 'joy': 9, 'stress': 9} (right panel); mean with 95% CI over the 12 time bins (left panel); both definitions are printed inside the figure",
+  "transformations": [
+    "per-dog value is the mean over that dog's coded 5-second bins"
+  ],
+  "axes": {
+    "y": {
+      "variable": "proximity to owner",
+      "units": "fraction of the dog's coded sample points at which it was nearest the owner",
+      "limits": [
+        0.0,
+        1.0
+      ],
+      "baseline_zero": true
+    },
+    "x": {
+      "variable": "odour condition",
+      "units": "none"
+    }
+  },
+  "shared_scales": "yes; both panels share the y axis limits and ticks",
+  "color": {
+    "variable": "odour condition",
+    "scale": "qualitative",
+    "palette": "okabe_ito",
+    "redundant_with": "x position and x tick label"
+  },
+  "excluded": "of 43 recruited dogs, 14 never reached Part 2, 3 discontinued and 2 did not investigate the odour, leaving 24 (blank 6, joy 9, stress 9); the paper does not attribute the 2 excluded dogs to a condition, so per-group entry counts are not recoverable and the figure says so",
+  "missing": "4 dogs have 11 coded sample points rather than 12; those bins are dropped from that dog's mean and the denominator is stated on the figure",
+  "source_script": "workflows/33_fig_wang2026.py",
+  "config": "configs/statreview.yaml",
+  "figure": "unit_of_analysis.png",
+  "git_sha": "f3b98a8-dirty"
+}

@@ -1,0 +1,107 @@
+# Parameters for the week-3 statistical-review workflows (workflows/3*).
+# WORKSPACE.md rule 3: code reads these values; code does not contain them.
+# The rules these parameters serve are in docs/statistical-review.md.
+
+review:
+  # S13. alpha is the threshold the reviewed papers themselves use; the review
+  # does not impose a different one, it reports what survives correction at
+  # the paper's own threshold.
+  alpha: 0.05
+  # S13. Both corrections are always reported. Bonferroni answers "could any
+  # of these be chance?"; Benjamini-Hochberg answers "what fraction of the
+  # called positives are chance?". They are different questions, so neither
+  # replaces the other.
+  corrections: [bonferroni, benjamini_hochberg]
+  # S13. How the test family is drawn when the paper does not declare one.
+  # "paper" = every p-value reported anywhere in the paper; "section" = every
+  # p-value within one results subsection. The review reports both; this names
+  # which one the headline verdict uses.
+  family_scope: paper
+  # S11. Below this many experimental units per group, the exact p-value floor
+  # is enumerated and reported beside every p-value from that comparison.
+  p_floor_check_below_n: 30
+  # S12. A non-rejection carrying argumentative weight is reported with this
+  # interval on the effect, so the reader sees what the data cannot exclude.
+  null_result_interval: CI95
+
+resampling:
+  # S10, S11. The permutation count sets the attainable p-value floor at
+  # 1/(n_permutations + 1); 10,000 gives a floor of 9.999e-05.
+  n_permutations: 10000
+  # S10. Bootstrap iterations for interval estimation. Tails need more
+  # iterations than centres.
+  n_bootstrap: 10000
+  bootstrap_interval: BCa
+  # WORKSPACE.md rule 4. Every stochastic step reads this seed.
+  random_seed: 20261015
+
+recompute:
+  # R6. A recomputed statistic "agrees" with the paper when it matches to the
+  # precision the paper printed, within this relative tolerance.
+  agreement_rtol: 0.005
+  # S4. An n reconciled from the deposit must match the printed n exactly;
+  # there is no tolerance on a count.
+  n_must_match_exactly: true
+
+# The paper set. One entry per review; the slug is the directory name under
+# reports/statistical_reviews/. data_source is what workflows/30_fetch_papers.py
+# resolves. Data availability is confirmed before a review is attempted; a
+# paper whose deposit cannot be obtained is recorded here as unavailable and
+# replaced rather than reviewed from the PDF alone (docs/statistical-review.md
+# requires recomputation for a blocking finding).
+papers:
+  - slug: wang2026-conspecific-odors
+    citation: "Wang & Horowitz, Scientific Reports 16:11176 (2026)"
+    title: "Dogs (Canis familiaris) distinguish conspecific emotional chemosignals"
+    paper_doi: 10.1038/s41598-026-41426-1
+    data_doi: 10.5061/dryad.bzkh189pt
+    data_source: dryad
+    status: confirmed
+
+  - slug: goold2016-behavioural-networks
+    citation: "Goold et al., Royal Society Open Science 3:160268 (2016)"
+    title: "Using network analysis to study behavioural phenotypes: an example using domestic dogs"
+    paper_doi: 10.1098/rsos.160268
+    data_doi: 10.5061/dryad.81k11
+    data_source: dryad
+    status: confirmed
+
+  - slug: forman2023-cat-fetching
+    citation: "Forman et al., Scientific Reports 13:20456 (2023)"
+    title: "Fetching felines: a survey of cat owners on the diversity of cat fetching behaviour"
+    paper_doi: 10.1038/s41598-023-47409-w
+    data_doi: null
+    data_source: unresolved
+    status: pending
+
+  - slug: lonardo2026-pupil-gestures
+    citation: "Lonardo et al., Cognition (2026)"
+    title: "Pupil size changes reveal that dogs are sensitive to the social conventions behind human gestures"
+    paper_doi: null
+    data_doi: null
+    data_source: unresolved
+    status: pending
+
+  - slug: alavinaini2026-bobcat-activity
+    citation: "Alavi Naini et al., microPublication Biology (2026)"
+    title: "Diel activity patterns of bobcats and domestic cats in the Houston metropolitan area"
+    paper_doi: null
+    data_doi: null
+    data_source: unresolved
+    status: pending
+
+outputs:
+  reviews: reports/statistical_reviews
+  results: results/statistical_reviews
+  raw: data/raw/papers
+
+figure:
+  # Week-3 review figures follow docs/figure-contract.md; these are the same
+  # rendering parameters as configs/chickweight.yaml so the two weeks' figures
+  # are visually consistent.
+  dpi: 300
+  base_font_size: 9
+  palette: okabe_ito
+  size_single_panel: [3.6, 2.8]
+  size_two_panel: [7.2, 2.8]
+  size_wide: [7.2, 3.4]

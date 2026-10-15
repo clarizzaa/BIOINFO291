@@ -1,0 +1,89 @@
+{
+  "figure": "what_survives.png",
+  "verdict": "blocked",
+  "pass1_verdict_before_any_other_information": "blocked, from the image and sidecar alone. Four enforced rules fail: the right-hand column is a Benjamini-Hochberg q-value on an axis labelled 'p-value' and read against one 0.05 rule (C5); neither panel states how many tests it contains, only the pooled 39 in the title (C8); 23 Part 2 markers collapse into 3 blobs so the counts the subtitles assert cannot be checked (C4); and the family size 39 is presented as exact although the sidecar calls it a lower bound (C11). Reached before the repository was touched; nothing found afterwards changed it.",
+  "rules_passed": [
+    "C1 - points and lines, so no zero baseline is owed; nothing is drawn as a bar, area or wedge",
+    "C2 - measured: the minor-tick ladders of the two panels fall on identical pixel rows (227 through 953, one decade = 116.6 px), so the sidecar's shared_scales declaration is true",
+    "C3 - each line joins the two analysis versions of one test, which is a pairing along an ordered axis, not a trajectory invented from row order",
+    "C6 - two states in Okabe-Ito vermillion and grey, distinguishable in grayscale and redundant with whether the line crosses the drawn 0.05 rule",
+    "C7 - the declared unit is the reported test and every line is one test; the counts in the subtitles are at that unit",
+    "C9 - every test is drawn individually rather than summarised (see the C4 finding for whether they can be told apart)",
+    "C10 - error_bar is declared 'none' and no interval is drawn; nothing is owed",
+    "C12 - the title's two claims match the panel counts the figure prints (21 to 0; 12 to 10), conditional on the labelling problem raised under C5",
+    "A2 - points and lines on a focused log range, declared in the sidecar",
+    "A8 - one before/after comparison per panel",
+    "A5 - not applicable; no histogram or density estimate"
+  ],
+  "findings": [
+    {
+      "rule": "C5",
+      "severity": "blocking",
+      "observed": "The y axis reads 'p-value (log scale); dashed line = 0.05' and the x ticks read 'as published' and 're-analysed'. The sidecar declares that the right position is 'the Benjamini-Hochberg q-value over all 39 tests', so one axis label, one dashed rule and one set of decades are serving a raw p on the left and an adjusted q on the right, and nothing in the image says the quantity changes between the two columns.",
+      "fix": "Name the quantity at each column - 'p' and 'BH q' on the x tick labels, with the axis label naming both - so the 0.05 rule is read as a significance threshold on the left and an FDR threshold on the right."
+    },
+    {
+      "rule": "C8",
+      "severity": "blocking",
+      "observed": "Neither panel says how many tests it holds. The only count in the image at that level is '39 tests' in the title; the subtitles give '12 significant as published - 10 after re-analysis' and '21 significant as published - 0 after re-analysis', which are numerators without their denominators. The sidecar's 16 and 23 appear nowhere on the figure.",
+      "fix": "Print the panel's test count in each subtitle, e.g. '16 tests: 12 significant as published, 10 after re-analysis'."
+    },
+    {
+      "rule": "C4",
+      "severity": "blocking",
+      "observed": "Part 2 declares 23 tests. Its 're-analysed' column is drawn as three dark shapes, the largest a single fused blob 21 px wide by 102 px tall spanning about q = 0.17 to 0.87 and containing roughly six markers' worth of ink (1695 px against 285 px for one marker). The other columns are no better: 11 and 10 separable blobs where 16 tests are declared, 14 where 23 are. A reader cannot count any column and so cannot check '21 significant' or '0 after re-analysis' against the marks.",
+      "fix": "Make the markers countable at every column - jitter along x, open markers, or a count printed at each column - so the number of tests in each column can be read off the drawing."
+    },
+    {
+      "rule": "C11",
+      "severity": "blocking",
+      "observed": "The title asserts 'correcting for 39 tests'. The sidecar states that the paper's blanket statements about unreported comparisons and the side-bias regressions have no reported p-value, 'so 39 is a lower bound on the family'. The figure presents 39 as the denominator of the correction with no sign that the family is incomplete, and a Benjamini-Hochberg q computed over an undercounted family is the anti-conservative direction.",
+      "fix": "Say on the figure that 39 is the number of reported p-values and a lower bound on the family, and state how many comparisons the paper describes without a p-value."
+    },
+    {
+      "rule": "sidecar",
+      "severity": "major",
+      "observed": "source_script declares 'workflows/32_fig_wang2026.py'. No such file exists; 32 is 32_recompute_wang2026.py and the figure script is 33_fig_wang2026.py. git_sha is 'f3b98a8-dirty', so the sha does not pin the code either.",
+      "fix": "Point source_script at the script that wrote the file, and regenerate on a clean tree."
+    },
+    {
+      "rule": "A4",
+      "severity": "minor",
+      "observed": "Part 2's whole claim is '0 after re-analysis', and the mark it rests on is drawn centred on the threshold: the lowest 're-analysed' marker's centre is at q = 0.0507 against a dashed rule drawn 3 px thick at 0.0502. At the resolution of the image that mark is on the line, not above it.",
+      "fix": "Label that one value next to its marker, so the claim does not depend on a distinction the drawing cannot resolve."
+    },
+    {
+      "rule": "A3",
+      "severity": "minor",
+      "observed": "Vermillion and grey lines carry the figure's organising distinction and no key, legend or direct label in the image says what either colour means.",
+      "fix": "Direct-label one vermillion line, e.g. 'crosses 0.05 after re-analysis'."
+    },
+    {
+      "rule": "A6",
+      "severity": "minor",
+      "observed": "The note 'values below 1e-06 drawn at 1e-06' does not say how many values were clipped - one marker sits on the floor in Part 1 - and the marker and its grey connecting line are drawn over the note, striking through 'below'.",
+      "fix": "State the number of clipped values and place the note clear of the floor marker."
+    },
+    {
+      "rule": "A7",
+      "severity": "minor",
+      "observed": "The title names Part 2 first and Part 1 second; the panels run Part 1 then Part 2, and the sidecar's n_per_group also lists Part 2 first.",
+      "fix": "Order the title's clauses, the panels and the sidecar's groups the same way."
+    }
+  ],
+  "sidecar_image_mismatches": [
+    "axes.y.variable declares 'p-value' while transformations declare the right position is a Benjamini-Hochberg q-value; the image carries only the 'p-value' label, so the sidecar contradicts itself and the image follows the wrong half.",
+    "n_per_group declares 16 and 23 tests; the image states neither, and no column resolves into that many separable markers (11/10 in Part 1, 14/3 in Part 2).",
+    "missing declares 'none; every reported p-value in the results section is drawn', which holds only with the floor convention the figure annotates; the number of values pushed onto that floor is not declared in either place.",
+    "source_script declares workflows/32_fig_wang2026.py, which does not exist in the repository.",
+    "shared_scales ('yes; both panels share the log y axis limits and ticks') is confirmed true: identical tick rows 227-953 in both panels."
+  ],
+  "reviewed_by": "FIGURE_REVIEWER (agents/figure-reviewer/)",
+  "round": 1,
+  "note": "Round 1, on the first render. All enforced findings were accepted and the figures were rebuilt in workflows/33_fig_wang2026.py: title direction corrected, interval definitions and their units printed in the image, marks made countable with open markers and offset summary bars, the exclusion cascade and proportion denominator put on the figure, the q-value column named on its tick label, per-panel test counts printed, and source_script pointed at the renamed script.",
+  "reviewer_deviations": [
+    "Read docs/figure-contract.md from the repository rather than from remembered rule identifiers, as the task had assumed it was unreachable.",
+    "Did not open the generating script; every fix is stated as what the figure must show. Listed workflows/, configs/ and results/ to check declared paths.",
+    "Mark counts in overlapped columns are lower bounds on separable marks."
+  ]
+}

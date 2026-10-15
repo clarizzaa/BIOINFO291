@@ -1,0 +1,90 @@
+{
+  "figure": "unit_of_analysis.png",
+  "verdict": "blocked",
+  "pass1_verdict_before_any_other_information": "blocked, from the image and sidecar alone. Four enforced rules fail: the title states the p-value change in the opposite direction to the one the panels show (C12); error bars are drawn in both panels with no definition anywhere in the image (C10); the left panel's declared 12 marks per group cannot be counted (C4); and no exclusion count or proportion denominator appears on the figure, with the sidecar's 43-to-24 cascade given only in total (C11). Reached before the repository was touched; nothing found afterwards changed it.",
+  "rules_passed": [
+    "C1 - marks are points on a y axis that starts at 0; no bars, areas, wedges, or 3-D rendering",
+    "C2 - measured: both panels' y ticks fall on identical pixel rows (0.0 at y=727, 1.0 at y=290, 0.2 every 87 px), so the sidecar's shared_scales declaration is true; the right panel's ticks are unlabelled but aligned",
+    "C3 - no marks are joined by lines",
+    "C5 - the only transformation is the per-dog mean the sidecar declares; the axis is not a ratio or log scale, so no reference line is owed",
+    "C6 - Okabe-Ito blue/orange/green for an unordered variable, redundant with x position and the x tick labels; the groups survive removal of colour",
+    "C7 - the dog-level analysis is present in its own panel at the declared unit, and the bin-level panel is headed 'What was tested' rather than offered as the result",
+    "C9 - every observation is drawn in both panels; no group is represented by a summary alone",
+    "A2 - points, so the 0-1.15 range is legitimate and is declared",
+    "A3 - groups are directly labelled on the x axis; no legend is needed or used",
+    "A4 - each panel annotates its own test outcome in place ('Kruskal-Wallis p = 9.6e-06', 'same test, same data: p = 0.23')",
+    "A8 - one comparison per panel, two panels",
+    "A5 - not applicable; no histogram or density estimate"
+  ],
+  "findings": [
+    {
+      "rule": "C12",
+      "severity": "blocking",
+      "observed": "The title reads 'Averaging 24 dogs into 12 time bins turns p = 1e-05 into p = 0.23', but the panel headed 'condition means per 5-second bin' is the one carrying p = 9.6e-06 and the panel headed 'one value per dog' carries p = 0.23. Averaging dogs into time bins is the operation that produces the 1e-05 end, not the 0.23 end, so the sentence names the operation and its result in opposite order to the figure beneath it.",
+      "fix": "State the direction the panels show: averaging 24 dogs into 12 time bins turns p = 0.23 into p = 1e-05. Quote the same p-value the left panel prints (9.6e-06) or round both consistently."
+    },
+    {
+      "rule": "C10",
+      "severity": "blocking",
+      "observed": "Both panels draw a horizontal mean with whiskers - visibly narrow on the left (blank: about 0.26 to 0.41) and about three times wider on the right (blank: about 0.08 to 0.70) - and no text in the image says what either interval is or what it is computed over. The sidecar declares 'mean with 95% CI over dogs (right panel); mean with 95% CI over time bins (left panel)', so the whole point of the comparison - the same level over a different n - is invisible to anyone holding only the image.",
+      "fix": "Print the interval definition and its n next to each panel's bar: 'mean, 95% CI over 12 bins' on the left and 'mean, 95% CI over 6/9/9 dogs' on the right."
+    },
+    {
+      "rule": "C4",
+      "severity": "blocking",
+      "observed": "The left panel prints 'n = 12' over each group, and the sidecar declares 36 bin means drawn. At 4x magnification the blank group resolves into at most 9 separable discs, joy 9, stress 7; total mark ink per group is 1585, 2048 and 1676 px against 222 px for one disc. The black mean/CI bar is drawn on top of the markers and bisects several of them, and in the right panel the markers at 0.0 are cut in half by the axis line. A reader cannot tell a tied bin from a missing one.",
+      "fix": "Make the 12 marks per group countable - wider jitter, open or smaller markers, the summary bar offset beside the points rather than over them - and let a marker at 0.0 sit clear of the axis line."
+    },
+    {
+      "rule": "C11",
+      "severity": "blocking",
+      "observed": "The figure states 24 dogs in the title and 6/9/9 above the right panel, and nothing else. The sidecar carries the cascade - 43 recruited, 14 never reached Part 2, 3 discontinued, 2 did not investigate the odour - only as a total, so neither the image nor the sidecar says which of the three groups lost those 19 dogs; blank ending at 6 against 9 and 9 is the kind of imbalance this is meant to expose. The y quantity is a fraction of sample points and the number of sample points behind each fraction appears nowhere, and the sidecar's pointer to the per-bin counts is an elided path, 'results/.../unit_comparison.csv'.",
+      "fix": "Put the entering and displayed counts per group on the figure (e.g. 'blank 6 of 14 recruited') and state the denominator of the proportion - how many sample points per dog - in the axis label or an in-panel note; give the sidecar's results path in full."
+    },
+    {
+      "rule": "sidecar",
+      "severity": "major",
+      "observed": "source_script declares 'workflows/32_fig_wang2026.py'. No such file exists in the repository; 32 is 32_recompute_wang2026.py and the figure script is 33_fig_wang2026.py. git_sha is 'f3b98a8-dirty', so the recorded commit does not pin the code that drew this either.",
+      "fix": "Point source_script at the script that actually wrote the file, and regenerate on a clean tree so the sha identifies the source."
+    },
+    {
+      "rule": "A7",
+      "severity": "minor",
+      "observed": "The two panel headings abut: the gap between '...per 5-second bin' and 'What was claimed...' is 20 px, the same as the word spaces inside each heading (measured gaps of 19-20 px at x=544, 734, 1132), so the two read as one run-on line.",
+      "fix": "Separate the headings so the gap between them is clearly larger than a word space."
+    },
+    {
+      "rule": "A7",
+      "severity": "minor",
+      "observed": "'n' names two different things in one figure: 'n = 12' over the left groups counts 5-second bins, 'n = 6' over the right counts dogs, and neither label carries the noun.",
+      "fix": "Write the unit into the label - 'n = 12 bins' and 'n = 6 dogs'."
+    },
+    {
+      "rule": "A7",
+      "severity": "minor",
+      "observed": "The right panel's annotation runs through the joy group's data: a joy marker at about 0.07 sits on top of the 'm' in 'same data', and two more joy markers at 0.0 sit under the same line of text.",
+      "fix": "Move the annotation clear of the lowest markers."
+    },
+    {
+      "rule": "A1",
+      "severity": "minor",
+      "observed": "The y axis reads 'Proximity to owner (fraction of sample points)'. The sidecar's unit is 'fraction of sample points nearest the owner'; the axis omits what the points are a fraction of being nearest to.",
+      "fix": "Use the sidecar's wording in the axis label."
+    }
+  ],
+  "sidecar_image_mismatches": [
+    "n_observations declares the left panel draws 36 condition x time-bin means, 12 per group; at 4x magnification the left groups resolve into at most 9, 9 and 7 separable marks, with mark ink equal to about 7.1, 9.2 and 7.6 single discs.",
+    "error_bar declares 'mean with 95% CI' for both panels; the image defines neither bar, so the declaration is unverifiable from what the reader receives.",
+    "excluded declares the 43-to-24 cascade as a single total, where the contract's field asks for the units lost per group; neither the image nor the sidecar attributes the 19 lost dogs to blank, joy or stress.",
+    "source_script declares workflows/32_fig_wang2026.py, which does not exist in the repository.",
+    "shared_scales ('yes; both panels share the y axis limits and ticks') is confirmed true: tick rows coincide at y = 290, 378, 465, 552, 640, 727 in both panels."
+  ],
+  "reviewed_by": "FIGURE_REVIEWER (agents/figure-reviewer/)",
+  "round": 1,
+  "note": "Round 1, on the first render. All enforced findings were accepted and the figures were rebuilt in workflows/33_fig_wang2026.py: title direction corrected, interval definitions and their units printed in the image, marks made countable with open markers and offset summary bars, the exclusion cascade and proportion denominator put on the figure, the q-value column named on its tick label, per-panel test counts printed, and source_script pointed at the renamed script.",
+  "reviewer_deviations": [
+    "Read docs/figure-contract.md from the repository rather than from remembered rule identifiers, as the task had assumed it was unreachable.",
+    "Did not open the generating script; every fix is stated as what the figure must show. Listed workflows/, configs/ and results/ to check declared paths.",
+    "Mark counts in overlapped columns are lower bounds on separable marks."
+  ]
+}

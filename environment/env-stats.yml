@@ -1,0 +1,17 @@
+# Environment for the week-3 statistical-review workflows (workflows/3*).
+# WORKSPACE.md rule 7: every step names its environment; resolved versions are
+# captured beside this file in env-stats.lock.txt.
+name: bioinfo291-stats
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pandas
+  - numpy
+  - scipy
+  - statsmodels
+  - matplotlib
+  - pyyaml
+  - openpyxl
+  - scikit-posthocs
+  - pytest

@@ -1,0 +1,232 @@
+{
+  "paper": {
+    "citation": "Wang & Horowitz, Scientific Reports 16:11176 (2026)",
+    "title": "Dogs (Canis familiaris) distinguish conspecific emotional chemosignals",
+    "paper_doi": "10.1038/s41598-026-41426-1",
+    "data_doi": "10.5061/dryad.bzkh189pt"
+  },
+  "contract": "docs/statistical-review.md (S1-S16, R1-R7)",
+  "verdict": "blocked",
+  "summary": {
+    "statistics_reproduced": {
+      "part1_wilcoxon_V": "16/16",
+      "part2_omnibus": "8/8",
+      "dunn": "11/11 at half the reported p (one-tailed)",
+      "glm_coefficients": "4/4"
+    },
+    "family_size_reported": 39,
+    "family_size_note": "lower bound; unreported comparisons and the side-bias/period regressions have no reported p-value",
+    "significant_as_published_raw": 33,
+    "significant_as_published_BH": 31,
+    "significant_after_reanalysis_BH": 10,
+    "part2_significant_after_reanalysis": 0,
+    "part2_closest_to_threshold_q": 0.0505
+  },
+  "claims": [
+    {
+      "id": "A1",
+      "claim": "Dogs distinguish conspecific odours collected under different emotion-eliciting conditions",
+      "location": "abstract; Results p.7",
+      "test_as_stated": "Wilcoxon signed-rank, pooled (V=2704, p=0.008; V=2061.5, p<0.001)",
+      "unit_used": "dog x odour pairing",
+      "n_used": 122,
+      "unit_defensible": "dog",
+      "n_defensible": 43,
+      "recomputed": {
+        "V": 2704.0,
+        "p": 0.0074711399423384
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "p_per_dog": 0.0256568653412614,
+        "sign_test_p": 0.0137181850586785,
+        "BH_q": 0.0323749397501331
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "major",
+          "observed": "the pooled test stacks 122 dog x pairing rows from 43 dogs",
+          "fix": "test one value per dog; it was done and the claim holds"
+        }
+      ],
+      "verdict": "supported"
+    },
+    {
+      "id": "A4",
+      "claim": "Dogs did not distinguish stress from baseline odour",
+      "location": "Results p.7; Discussion p.10",
+      "test_as_stated": "Wilcoxon signed-rank (V=412, p=0.820)",
+      "unit_used": "dog x odour pairing",
+      "n_used": 41,
+      "unit_defensible": "dog",
+      "n_defensible": 41,
+      "recomputed": {
+        "V": 412.0,
+        "p": 0.8175065857803929
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "note": "no interval or equivalence test reported or computable as an equivalence claim"
+      },
+      "findings": [
+        {
+          "rule": "S12",
+          "severity": "blocking",
+          "observed": "the Discussion states dogs 'did not distinguish' and builds three explanatory paragraphs on a p = 0.818 non-rejection",
+          "fix": "report the estimate with its interval and state what effect sizes remain admissible"
+        }
+      ],
+      "verdict": "weakened"
+    },
+    {
+      "id": "B3",
+      "claim": "Stress odour increased proximity to the owner (secure-base claim)",
+      "location": "abstract; Results p.9",
+      "test_as_stated": "Kruskal-Wallis H(2)=23.11, p<0.001 with Dunn post-hoc",
+      "unit_used": "5-second time bin",
+      "n_used": 36,
+      "unit_defensible": "dog",
+      "n_defensible": 24,
+      "recomputed": {
+        "H": 23.1053,
+        "p": 9.610737821636655e-06
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "p_on_dogs": 0.2305211549286946,
+        "n_dogs_per_group": "6/9/9"
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "blocking",
+          "observed": "the test ran on 12 dog-averaged time-bin means per condition; the 24 dogs appear only in the raw block and were never tested",
+          "fix": "test the 24 dogs; p moves from 9.6e-06 to 0.231"
+        },
+        {
+          "rule": "S5",
+          "severity": "blocking",
+          "observed": "12 consecutive 5-second bins of the same 6-9 dogs are treated as independent observations",
+          "fix": "treat the bins as repeated measures of a dog"
+        },
+        {
+          "rule": "S8",
+          "severity": "blocking",
+          "observed": "Fig 6 reports 'means of the 12 sample points +/- S.E.M.'; over dogs the 95% interval for the blank condition is 2.9x wider",
+          "fix": "state the interval over the experimental unit"
+        },
+        {
+          "rule": "S6",
+          "severity": "blocking",
+          "observed": "the supporting Dunn p-values are one-tailed; recomputed two-sided they are exactly double",
+          "fix": "report two-sided post-hoc p-values"
+        }
+      ],
+      "verdict": "unsupported"
+    },
+    {
+      "id": "B6",
+      "claim": "Females responded more strongly to stress odour than males",
+      "location": "Results p.10",
+      "test_as_stated": "Gaussian GLM, condition x sex (4 coefficients, p = 0.007 to <0.001)",
+      "unit_used": "5-second time bin",
+      "n_used": 72,
+      "unit_defensible": "dog",
+      "n_defensible": 24,
+      "recomputed": {
+        "beta": -0.2806,
+        "t": -2.7962,
+        "p": 0.006766841000831
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "p_on_dogs_by_outcome": {
+          "stressbehav": 0.4221,
+          "joybehav": 0.1809,
+          "owner": 0.4838,
+          "stranger": 0.3775
+        },
+        "dogs_per_sex_in_stress_condition": "4 female, 5 male"
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "blocking",
+          "observed": "fitted on 72 bin means (12 bins x 3 conditions x 2 sexes); the interaction rests on 4 female versus 5 male dogs in the stress condition",
+          "fix": "fit on dogs; all four interaction p-values move to 0.18-0.48"
+        },
+        {
+          "rule": "S15",
+          "severity": "major",
+          "observed": "reported as a finding about sex differences in canine olfactory response rather than as a hypothesis",
+          "fix": "state it as not estimable at this n"
+        }
+      ],
+      "verdict": "unsupported"
+    }
+  ],
+  "findings_against_the_paper_as_a_whole": [
+    {
+      "rule": "S13",
+      "severity": "blocking",
+      "observed": "39 reported p-values with no correction named anywhere; Bonferroni removes 15 of 33, BH removes 2",
+      "fix": "declare the family and report corrected values"
+    },
+    {
+      "rule": "S7",
+      "severity": "blocking",
+      "observed": "Shapiro-Wilk used as a switch between ANOVA and Kruskal-Wallis, applied to the 12 bin means",
+      "fix": "choose the test from the design; here the choice changes no conclusion"
+    },
+    {
+      "rule": "S14",
+      "severity": "major",
+      "observed": "'Any unreported comparisons showed no statistical significance (p>0.05)'; the posture analysis is described as prompted by an observation during coding and reported at the same alpha",
+      "fix": "state the total number of comparisons and label post-hoc analyses"
+    },
+    {
+      "rule": "S1",
+      "severity": "major",
+      "observed": "the claim is about 'dogs'; the sample is 43 owner-recruited dogs at one laboratory and all odour stimuli came from a single female donor",
+      "fix": "state the population the evidence supports"
+    },
+    {
+      "rule": "S2",
+      "severity": "major",
+      "observed": "an owner-distraction task was added partway through and the testing room changed; both dismissed as 'p>0.05' with no coefficient, interval or power statement on groups of 14/17/12",
+      "fix": "report the confounder estimate with its interval"
+    },
+    {
+      "rule": "R2",
+      "severity": "minor",
+      "observed": "the direction of V is unstated and flips within one paragraph (2704 + 4799 = 7503 = 122*123/2)",
+      "fix": "state the direction once"
+    },
+    {
+      "rule": "R1",
+      "severity": "minor",
+      "observed": "14 of 39 p-values given only as '<0.001'",
+      "fix": "report exact values"
+    }
+  ],
+  "rules_passed": {
+    "S4": "every n in the paper reconciles exactly against the deposit",
+    "S9": "the surviving Part 1 claims do not depend on signed-rank symmetry; sign test p = 0.0137 and 0.00027 agree with signed-rank despite skewness 1.15",
+    "S11": "no reported p-value is below its resolution floor; smallest comparison has 17 non-zero pairs, floor 1.5e-05",
+    "S10": "not applicable; no permutation or bootstrap used",
+    "S15": "the abstract's Part 1 sentences match the tests supporting them"
+  },
+  "not_checked": [
+    "behavioural coding (videos not deposited); inter-observer reliability not reported",
+    "per-condition entry counts for Part 2 before the 2 exclusions - not recoverable from the deposit",
+    "the size of the undeclared test family - side-bias and period regression p-values are not reported",
+    "chemical characterisation of the odour stimuli - none reported; a design question, noted not scored"
+  ],
+  "provenance": {
+    "recompute": "workflows/32_recompute_wang2026.py",
+    "figures": "workflows/33_fig_wang2026.py",
+    "tables": "results/statistical_reviews/wang2026-conspecific-odors/",
+    "environment": "environment/env-stats.yml"
+  }
+}

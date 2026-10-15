@@ -1,0 +1,10 @@
+quantity,paper says,deposit contains,agrees,note
+dogs recruited,43,43,yes,
+data-collection periods,14 / 17 / 12,12 / 14 / 17,yes,"sorted; file labels them 2025-04-24, 2025-11-24, Feb-Mar24"
+Part 1 joy-baseline pairings,40,40,yes,"pairings, not dogs"
+Part 1 stress-baseline pairings,41,41,yes,"pairings, not dogs"
+Part 1 stress-joy pairings,41,41,yes,"pairings, not dogs"
+Part 1 pooled test input,not stated,122 paired rows,n/a,40+41+41 pairings contributed by 43 dogs
+Part 2 dogs analyzed (blank/joy/stress),6 / 9 / 9,6 / 9 / 9,yes,"24 total, between-subjects"
+Part 2 omnibus test input,not stated,36 rows (12 per condition),n/a,time-bin means; the 24 dogs are averaged away
+Part 2 GLM input,not stated,72 rows,n/a,12 bins x 3 conditions x 2 sexes

@@ -1,0 +1,3 @@
+test_id,comparison,n_pooled_rows,n_dogs,p_pooled,p_per_dog,V_per_dog,method,median_per_dog_seconds,mean_per_dog_seconds,sig_per_dog,sign_test_k_positive,sign_test_n,sign_test_p,difference_skewness,sign_test_agrees
+p1.dog.discrimination,"discrimination (novel - habit4), one value per dog",122,43,0.0074711399423384225,0.025656865341261437,657.0,exact,0.623,1.003,True,30,43,0.0137181850586785,1.149,True
+p1.dog.dishabituation,"dishabituation (novel - habit3), one value per dog",122,42,9.974305225765198e-05,3.893583382017842e-05,781.0,normal+cc,1.167,1.772,True,33,42,0.0002715392342906853,-0.18,True

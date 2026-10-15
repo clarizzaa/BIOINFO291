@@ -1,0 +1,5 @@
+test_id,outcome,term,n_rows_used,n_dogs,AIC_reported,AIC_recomputed,beta_reported,beta_recomputed,SE_reported,SE_recomputed,t_reported,t_recomputed,p_reported,p_recomputed,p_on_dogs,beta_matches
+p2.glm.stressbehav,stressbehav,cond[T.S]:sex[T.M],72,24,-39.927,-41.927,-0.281,-0.2806,0.1,0.1003,-2.796,-2.7962,0.007,0.006766841000831068,0.42205465664777,True
+p2.glm.joybehav,joybehav,cond[T.S]:sex[T.M],72,24,45.29,43.291,0.943,0.9431,0.181,0.1813,5.201,5.2008,0.001,2.0988890172607504e-06,0.1808903741789206,True
+p2.glm.owner,owner,cond[T.S]:sex[T.M],72,24,-42.484,-44.484,-0.3,-0.3,0.099,0.0986,-3.044,-3.0435,0.003,0.0033553966411354447,0.4838170868873065,True
+p2.glm.stranger,stranger,cond[T.J]:sex[T.M],72,24,-11.885,-13.885,0.339,0.3389,0.122,0.1219,2.78,2.7799,0.007,0.007077349326740058,0.3775141014410356,True

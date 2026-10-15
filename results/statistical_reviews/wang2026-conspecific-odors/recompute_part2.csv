@@ -1,0 +1,9 @@
+test_id,outcome,test_as_stated,n_per_group,stat_reported,stat_recomputed,stat_matches,p_reported,p_recomputed
+p2.omnibus.stressbehav,stressbehav,Kruskal-Wallis,12/12/12,20.96,20.964,True,0.001,2.8037068125926036e-05
+p2.omnibus.joybehav,joybehav,Kruskal-Wallis,12/12/12,23.98,23.9797,True,0.001,6.2068458536524346e-06
+p2.omnibus.owner,owner,Kruskal-Wallis,12/12/12,23.11,23.1053,True,0.001,9.610737821636655e-06
+p2.omnibus.box,box,ANOVA,12/12/12,1.035,1.0348,True,0.37,0.3665254810329868
+p2.omnibus.stranger,stranger,Kruskal-Wallis,12/12/12,8.28,8.2816,True,0.016,0.015909923414210155
+p2.omnibus.upright,upright,Kruskal-Wallis,12/12/12,16.89,16.8882,True,0.001,0.00021516981087747066
+p2.omnibus.sit,sit,Kruskal-Wallis,12/12/12,5.08,5.0786,True,0.079,0.07891995310375644
+p2.omnibus.prone,prone,Kruskal-Wallis,12/12/12,15.6326,15.6326,True,0.001,0.0004031150188140777

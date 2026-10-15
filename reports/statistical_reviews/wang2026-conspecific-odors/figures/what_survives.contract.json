@@ -1,0 +1,45 @@
+{
+  "question": "Which of the paper's 39 reported tests remain significant once Part 2 is tested on dogs and the whole family is corrected?",
+  "claim": "Part 1's results mostly survive counting dogs and correcting the family; Part 2's do not",
+  "experimental_unit": "statistical test (one line per reported p-value)",
+  "n_per_group": {
+    "Part 1: investigation time": 16,
+    "Part 2: behaviour after exposure": 23
+  },
+  "n_observations": "none; every line is one reported test",
+  "error_bar": "none; p-values and q-values are point estimates with no interval",
+  "transformations": [
+    "y axis is log10",
+    "left column is the p-value recomputed at the unit the paper used",
+    "right column is the Benjamini-Hochberg q-value over all 39 tests, with every Part 2 test recomputed at the dog level; both quantities are named on the x tick labels",
+    "2 value(s) below 1e-06 are drawn at 1e-06, stated on the figure"
+  ],
+  "axes": {
+    "y": {
+      "variable": "p-value (left column), BH q-value (right column)",
+      "units": "probability",
+      "limits": [
+        5.047085312541881e-07,
+        1.722449262067414
+      ],
+      "baseline_zero": false
+    },
+    "x": {
+      "variable": "analysis version",
+      "units": "none"
+    }
+  },
+  "shared_scales": "yes; both panels share the log y axis limits and ticks",
+  "color": {
+    "variable": "whether the test stops being significant",
+    "scale": "qualitative",
+    "palette": "okabe_ito",
+    "redundant_with": "the line's slope relative to the drawn threshold; one orange line is directly labelled"
+  },
+  "excluded": "none of the reported p-values; the paper's two blanket statements about unreported comparisons and the side-bias regressions have no reported p-value and cannot be counted, which the figure states",
+  "missing": "none; every p-value reported in the results section is drawn",
+  "source_script": "workflows/33_fig_wang2026.py",
+  "config": "configs/statreview.yaml",
+  "figure": "what_survives.png",
+  "git_sha": "f3b98a8-dirty"
+}

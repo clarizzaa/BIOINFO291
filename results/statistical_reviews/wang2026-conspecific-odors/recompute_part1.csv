@@ -1,0 +1,17 @@
+test_id,comparison,n,V_reported,V_recomputed,V_opposite_direction,V_matches,p_reported,p_recomputed,method,zeros_dropped,p_floor_at_this_n
+p1.pooled.habituation,pooled: habit1 vs habit3,122,7108.0,7108.0,395.0,True,0.001,9.946263337475924e-18,normal+cc,0,3.76158192263132e-37
+p1.pooled.discrimination,pooled: novel vs habit4,122,2704.0,2704.0,4799.0,True,0.008,0.0074711399423384225,normal+cc,0,3.76158192263132e-37
+p1.pooled.dishabituation,pooled: novel vs habit3,118,2061.5,2061.0,4960.0,True,0.001,9.974305225765198e-05,normal+cc,4,6.018531076210112e-36
+p1.pooled.format,pooled: habit3 vs habit4,120,2977.0,2977.0,4283.0,True,0.087,0.08748576297592724,normal+cc,2,1.504632769052528e-36
+p1.JB.discrimination,JB: novel vs habit4,40,226.0,226.0,594.0,True,0.013,0.01251208440407936,exact,0,1.8189894035458565e-12
+p1.JB.dishabituation,JB: novel vs habit3,38,133.0,133.0,608.0,True,0.001,0.000588110187518103,normal+cc,2,7.275957614183426e-12
+p1.SB.discrimination,SB: novel vs habit4,41,412.0,412.0,449.0,True,0.82,0.8175065857803929,exact,0,9.094947017729282e-13
+p1.SJ.discrimination,SJ: novel vs habit4,41,301.0,301.0,560.0,True,0.095,0.09485765464069118,exact,0,9.094947017729282e-13
+p1.SJ.dishabituation,SJ: novel vs habit3,37,127.0,127.0,576.0,True,0.001,0.0007266325842629553,normal+cc,4,1.4551915228366852e-11
+p1.JhabBnov.discrim,"J habituated, B novel: novel vs habit4",19,26.0,26.0,164.0,True,0.004,0.003917694091796875,exact,0,3.814697265625e-06
+p1.BhabJnov.discrim,"B habituated, J novel: novel vs habit4",21,94.0,94.0,137.0,True,0.47,0.47333431243896484,exact,0,9.5367431640625e-07
+p1.JhabBnov.dishab,"J habituated, B novel: novel vs habit3",19,25.0,25.0,165.0,True,0.003,0.0033416748046875,exact,0,3.814697265625e-06
+p1.BhabJnov.dishab,"B habituated, J novel: novel vs habit3",19,44.0,44.0,146.0,True,0.042,0.04213035871062726,normal+cc,2,3.814697265625e-06
+p1.ShabJnov.discrim,"S habituated, J novel: novel vs habit4",20,23.0,23.0,187.0,True,0.001,0.001209259033203125,exact,0,1.9073486328125e-06
+p1.ShabJnov.dishab,"S habituated, J novel: novel vs habit3",20,29.0,29.0,181.0,True,0.003,0.0031528472900390625,exact,0,1.9073486328125e-06
+p1.JhabSnov.dishab,"J habituated, S novel: novel vs habit3",17,34.0,34.0,119.0,True,0.045,0.04678952115450226,normal+cc,4,1.52587890625e-05
