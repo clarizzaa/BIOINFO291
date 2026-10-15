@@ -132,6 +132,39 @@ def test_the_paper_verdict_follows_from_its_claims(d):
 
 
 @pytest.mark.parametrize("d", review_dirs(), ids=lambda d: d.name)
+def test_the_summary_counts_match_the_claim_records(d):
+    """A headline that overcounts its own claims is the easiest error to make."""
+    rec = json.loads((d / "review.json").read_text())
+    declared = rec.get("summary", {}).get("claim_verdicts")
+    if declared is None:
+        pytest.skip("no claim_verdicts summary declared")
+    actual = {v: sorted(c["id"] for c in rec["claims"] if c["verdict"] == v)
+              for v in ("supported", "weakened", "unsupported")}
+    assert declared == actual, f"{d.name}: summary says {declared}, claims say {actual}"
+    assert sum(len(v) for v in actual.values()) == len(rec["claims"])
+
+
+@pytest.mark.parametrize("d", review_dirs(), ids=lambda d: d.name)
+def test_the_prose_verdict_matches_the_record(d):
+    """REVIEW.md's headline counts must agree with review.json's claim records."""
+    import re
+    md = (d / "REVIEW.md").read_text()
+    rec = json.loads((d / "review.json").read_text())
+    declared = rec.get("summary", {}).get("claim_verdicts")
+    if declared is None:
+        pytest.skip("no claim_verdicts summary declared")
+    words = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+             "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11}
+    for verdict, ids in declared.items():
+        m = re.search(rf"(\w+)\s+{verdict}\b", md)
+        assert m, f"{d.name}: REVIEW.md never states how many claims are {verdict}"
+        stated = words.get(m.group(1).lower(), m.group(1))
+        assert str(stated) == str(len(ids)), (
+            f"{d.name}: REVIEW.md says {m.group(1)!r} {verdict}, "
+            f"review.json records {len(ids)} ({', '.join(ids)})")
+
+
+@pytest.mark.parametrize("d", review_dirs(), ids=lambda d: d.name)
 def test_every_review_figure_has_a_sidecar(d):
     for png in sorted((d / "figures").glob("*.png")) if (d / "figures").is_dir() else []:
         sidecar = png.with_suffix("").with_suffix(".contract.json")

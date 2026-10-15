@@ -71,8 +71,13 @@ papers:
     title: "Fetching felines: a survey of cat owners on the diversity of cat fetching behaviour"
     paper_doi: 10.1038/s41598-023-47409-w
     data_doi: null
-    data_source: unresolved
-    status: pending
+    # "All data generated or analysed during this study are included in this
+    # published article (and its Supplementary Information files)" - there is no
+    # deposit. Whether this paper is reviewable depends on whether the SI holds
+    # row-level responses or only summary tables; see docs/statistical-review.md,
+    # which requires recomputation for a blocking finding.
+    data_source: supplementary_information
+    status: data_pending
 
   - slug: lonardo2026-pupil-gestures
     citation: "Lonardo et al., Cognition (2026)"

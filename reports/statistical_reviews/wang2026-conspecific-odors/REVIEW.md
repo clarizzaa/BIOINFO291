@@ -11,7 +11,7 @@ Registered with checksums in `data/metadata/SOURCES.md`.
 **Rules.** [`docs/statistical-review.md`](../../../docs/statistical-review.md)
 (S1–S16, R1–R7). Figure rules: [`docs/figure-contract.md`](../../../docs/figure-contract.md).
 
-**Verdict: `blocked`.** Five claims unsupported, four weakened, five supported.
+**Verdict: `blocked`.** Of the 11 claims in section 1: six unsupported (B1–B6), one weakened (A4), four supported (A1, A2, A3, A5).
 Every reported statistic reproduces from the deposit; the failures are in what
 the tests were computed on, not in the arithmetic.
 
@@ -252,13 +252,15 @@ create it.
   bins are in the data; what is not established is that the difference exceeds
   what 6 to 9 dogs per group can distinguish from noise.
 
-**Weakened.** A4 (F4: a null, not an absence), and B6's framing — the sex
-difference is a hypothesis these data cannot test, not a finding.
+**Weakened.** A4 — a non-rejection reported as an established absence (F4).
+The estimate and its interval are what the claim needs, and neither is given.
 
-**Unsupported as stated.** B1, B2, B3, B4, B5 — specifically the inferential
-claims that odour condition *affected* each behaviour. None survives counting
-dogs. B3, the secure-base result that the abstract leads with and the Discussion
-builds on, moves from p = 9.6 × 10⁻⁶ to p = 0.23.
+**Unsupported as stated.** B1–B6 — the inferential claims that odour condition
+*affected* each behaviour, and the sex × condition claim. None survives counting
+dogs. B3, the secure-base result the abstract leads with and the Discussion
+builds on, moves from p = 9.6 × 10⁻⁶ to p = 0.23. B6 carries a blocking S3
+finding like the rest, so it is unsupported rather than merely weakened: the
+sex difference is a hypothesis these data cannot test, not a finding.
 
 **One honest caveat about the re-analysis.** The claim "0 of 23 Part 2 tests
 survive" rests on a nearest value of q = 0.0505 against a 0.05 threshold. That

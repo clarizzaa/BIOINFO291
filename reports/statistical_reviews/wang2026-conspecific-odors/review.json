@@ -20,7 +20,26 @@
     "significant_as_published_BH": 31,
     "significant_after_reanalysis_BH": 10,
     "part2_significant_after_reanalysis": 0,
-    "part2_closest_to_threshold_q": 0.0505
+    "part2_closest_to_threshold_q": 0.0505,
+    "claim_verdicts": {
+      "supported": [
+        "A1",
+        "A2",
+        "A3",
+        "A5"
+      ],
+      "weakened": [
+        "A4"
+      ],
+      "unsupported": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6"
+      ]
+    }
   },
   "claims": [
     {
@@ -53,6 +72,64 @@
       "verdict": "supported"
     },
     {
+      "id": "A2",
+      "claim": "Dogs distinguish joy from baseline odour",
+      "location": "Results p.7",
+      "test_as_stated": "Wilcoxon signed-rank V=226, p=0.013",
+      "unit_used": "dog x odour pairing, n=40",
+      "n_used": 40,
+      "unit_defensible": "dog, n=43",
+      "n_defensible": 43,
+      "recomputed": {
+        "V": 226.0,
+        "p": 0.0125120844040793
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "BH_q_over_39_tests": 0.0487971291759095
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "major",
+          "observed": "the per-pairing tests still pool two or three pairings per dog",
+          "fix": "report one value per dog; done for the pooled claims and they hold",
+          "changed_no_conclusion": true
+        }
+      ],
+      "verdict": "supported",
+      "supported_sentence": "Dogs distinguish joy from baseline odour"
+    },
+    {
+      "id": "A3",
+      "claim": "Dogs distinguish joy from stress odour",
+      "location": "Results p.7",
+      "test_as_stated": "Wilcoxon signed-rank V=23, p=0.001",
+      "unit_used": "dog x odour pairing, n=20",
+      "n_used": 20,
+      "unit_defensible": "dog, n=43",
+      "n_defensible": 43,
+      "recomputed": {
+        "V": 23.0,
+        "p": 0.0012092590332031
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "BH_q_over_39_tests": 0.0094322204589843
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "major",
+          "observed": "the per-pairing tests still pool two or three pairings per dog",
+          "fix": "report one value per dog; done for the pooled claims and they hold",
+          "changed_no_conclusion": true
+        }
+      ],
+      "verdict": "supported",
+      "supported_sentence": "Dogs distinguish joy from stress odour"
+    },
+    {
       "id": "A4",
       "claim": "Dogs did not distinguish stress from baseline odour",
       "location": "Results p.7; Discussion p.10",
@@ -78,6 +155,131 @@
         }
       ],
       "verdict": "weakened"
+    },
+    {
+      "id": "A5",
+      "claim": "There was no side bias and no difference across data-collection periods",
+      "location": "Results p.9",
+      "test_as_stated": "linear regressions per emotional pairing, reported only as p>0.05",
+      "unit_used": "dog x odour pairing",
+      "n_used": null,
+      "unit_defensible": "dog",
+      "n_defensible": 43,
+      "recomputed": "not recomputable: the paper reports no coefficient, interval or p-value for these models",
+      "agrees_with_paper": "not assessable",
+      "reanalysis": {
+        "note": "not attempted; the models are described but not reported"
+      },
+      "findings": [
+        {
+          "rule": "S2",
+          "severity": "major",
+          "observed": "an owner-distraction task was added partway through and the testing room changed; both dismissed as 'p>0.05' with no coefficient, interval or power statement on period groups of 14/17/12",
+          "fix": "report the confounder estimate with its interval"
+        }
+      ],
+      "verdict": "supported",
+      "supported_sentence": "No side bias or period effect was detected, which is all the reported check establishes."
+    },
+    {
+      "id": "B1",
+      "claim": "Odour condition affected the frequency of stress behaviours",
+      "location": "Results p.9",
+      "test_as_stated": "Kruskal-Wallis H(2)=20.96 with Dunn post-hoc",
+      "unit_used": "5-second time bin, n=36",
+      "n_used": 36,
+      "unit_defensible": "dog, n=24",
+      "n_defensible": 24,
+      "recomputed": {
+        "p": 2.8037068125926036e-05
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "p_on_dogs": 0.1059436657167043,
+        "n_dogs_per_group": "6/9/9",
+        "BH_q_at_dog": 0.1721584567896445
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "blocking",
+          "observed": "the test ran on 12 dog-averaged time-bin means per condition; the 24 dogs appear only in the raw block and were never tested",
+          "fix": "test the dogs",
+          "demonstrated_by": "results/.../unit_comparison.csv; figures/unit_of_analysis.png"
+        },
+        {
+          "rule": "S5",
+          "severity": "blocking",
+          "observed": "12 consecutive 5-second bins of the same 6-9 dogs are treated as independent observations",
+          "fix": "treat the bins as repeated measures of a dog",
+          "demonstrated_by": "results/.../unit_comparison.csv"
+        },
+        {
+          "rule": "S8",
+          "severity": "blocking",
+          "observed": "Fig 6 reports 'means of the 12 sample points +/- S.E.M.', an interval over bins rather than over dogs",
+          "fix": "state the interval at the experimental unit",
+          "demonstrated_by": "figures/unit_of_analysis.png"
+        },
+        {
+          "rule": "S6",
+          "severity": "blocking",
+          "observed": "the supporting Dunn p-values are one-tailed; recomputed two-sided they are exactly double",
+          "fix": "report two-sided post-hoc p-values",
+          "demonstrated_by": "results/.../recompute_dunn.csv"
+        }
+      ],
+      "verdict": "unsupported"
+    },
+    {
+      "id": "B2",
+      "claim": "Odour condition affected the frequency of joy behaviours",
+      "location": "Results p.9",
+      "test_as_stated": "Kruskal-Wallis H(2)=23.98 with Dunn post-hoc",
+      "unit_used": "5-second time bin, n=36",
+      "n_used": 36,
+      "unit_defensible": "dog, n=24",
+      "n_defensible": 24,
+      "recomputed": {
+        "p": 6.2068458536524346e-06
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "p_on_dogs": 0.0382681376979352,
+        "n_dogs_per_group": "6/9/9",
+        "BH_q_at_dog": 0.1095389326476308
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "blocking",
+          "observed": "the test ran on 12 dog-averaged time-bin means per condition; the 24 dogs appear only in the raw block and were never tested",
+          "fix": "test the dogs",
+          "demonstrated_by": "results/.../unit_comparison.csv; figures/unit_of_analysis.png"
+        },
+        {
+          "rule": "S5",
+          "severity": "blocking",
+          "observed": "12 consecutive 5-second bins of the same 6-9 dogs are treated as independent observations",
+          "fix": "treat the bins as repeated measures of a dog",
+          "demonstrated_by": "results/.../unit_comparison.csv"
+        },
+        {
+          "rule": "S8",
+          "severity": "blocking",
+          "observed": "Fig 6 reports 'means of the 12 sample points +/- S.E.M.', an interval over bins rather than over dogs",
+          "fix": "state the interval at the experimental unit",
+          "demonstrated_by": "figures/unit_of_analysis.png"
+        },
+        {
+          "rule": "S6",
+          "severity": "blocking",
+          "observed": "the supporting Dunn p-values are one-tailed; recomputed two-sided they are exactly double",
+          "fix": "report two-sided post-hoc p-values",
+          "demonstrated_by": "results/.../recompute_dunn.csv"
+        }
+      ],
+      "verdict": "unsupported"
     },
     {
       "id": "B3",
@@ -121,6 +323,106 @@
           "severity": "blocking",
           "observed": "the supporting Dunn p-values are one-tailed; recomputed two-sided they are exactly double",
           "fix": "report two-sided post-hoc p-values"
+        }
+      ],
+      "verdict": "unsupported"
+    },
+    {
+      "id": "B4",
+      "claim": "Stress odour decreased proximity to a stranger",
+      "location": "Results p.9",
+      "test_as_stated": "Kruskal-Wallis H(2)=8.28 with Dunn post-hoc",
+      "unit_used": "5-second time bin, n=36",
+      "n_used": 36,
+      "unit_defensible": "dog, n=24",
+      "n_defensible": 24,
+      "recomputed": {
+        "p": 0.0159099234142101
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "p_on_dogs": 0.4368303019189596,
+        "n_dogs_per_group": "6/9/9",
+        "BH_q_at_dog": 0.5010700522011596
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "blocking",
+          "observed": "the test ran on 12 dog-averaged time-bin means per condition; the 24 dogs appear only in the raw block and were never tested",
+          "fix": "test the dogs",
+          "demonstrated_by": "results/.../unit_comparison.csv; figures/unit_of_analysis.png"
+        },
+        {
+          "rule": "S5",
+          "severity": "blocking",
+          "observed": "12 consecutive 5-second bins of the same 6-9 dogs are treated as independent observations",
+          "fix": "treat the bins as repeated measures of a dog",
+          "demonstrated_by": "results/.../unit_comparison.csv"
+        },
+        {
+          "rule": "S8",
+          "severity": "blocking",
+          "observed": "Fig 6 reports 'means of the 12 sample points +/- S.E.M.', an interval over bins rather than over dogs",
+          "fix": "state the interval at the experimental unit",
+          "demonstrated_by": "figures/unit_of_analysis.png"
+        },
+        {
+          "rule": "S6",
+          "severity": "blocking",
+          "observed": "the supporting Dunn p-values are one-tailed; recomputed two-sided they are exactly double",
+          "fix": "report two-sided post-hoc p-values",
+          "demonstrated_by": "results/.../recompute_dunn.csv"
+        }
+      ],
+      "verdict": "unsupported"
+    },
+    {
+      "id": "B5",
+      "claim": "Posture differed by odour condition (more upright, less prone, in blank)",
+      "location": "Results pp.9-10",
+      "test_as_stated": "Kruskal-Wallis H(2)=16.89 with Dunn post-hoc",
+      "unit_used": "5-second time bin, n=36",
+      "n_used": 36,
+      "unit_defensible": "dog, n=24",
+      "n_defensible": 24,
+      "recomputed": {
+        "p": 0.0002151698108774
+      },
+      "agrees_with_paper": true,
+      "reanalysis": {
+        "p_on_dogs": 0.1158435586237786,
+        "n_dogs_per_group": "6/9/9",
+        "BH_q_at_dog": 0.1737653379356679
+      },
+      "findings": [
+        {
+          "rule": "S3",
+          "severity": "blocking",
+          "observed": "the test ran on 12 dog-averaged time-bin means per condition; the 24 dogs appear only in the raw block and were never tested",
+          "fix": "test the dogs",
+          "demonstrated_by": "results/.../unit_comparison.csv; figures/unit_of_analysis.png"
+        },
+        {
+          "rule": "S5",
+          "severity": "blocking",
+          "observed": "12 consecutive 5-second bins of the same 6-9 dogs are treated as independent observations",
+          "fix": "treat the bins as repeated measures of a dog",
+          "demonstrated_by": "results/.../unit_comparison.csv"
+        },
+        {
+          "rule": "S8",
+          "severity": "blocking",
+          "observed": "Fig 6 reports 'means of the 12 sample points +/- S.E.M.', an interval over bins rather than over dogs",
+          "fix": "state the interval at the experimental unit",
+          "demonstrated_by": "figures/unit_of_analysis.png"
+        },
+        {
+          "rule": "S6",
+          "severity": "blocking",
+          "observed": "the supporting Dunn p-values are one-tailed; recomputed two-sided they are exactly double",
+          "fix": "report two-sided post-hoc p-values",
+          "demonstrated_by": "results/.../recompute_dunn.csv"
         }
       ],
       "verdict": "unsupported"
@@ -228,5 +530,10 @@
     "figures": "workflows/33_fig_wang2026.py",
     "tables": "results/statistical_reviews/wang2026-conspecific-odors/",
     "environment": "environment/env-stats.yml"
-  }
+  },
+  "caveats_on_this_review": [
+    "The 'no Part 2 result survives' statement rests on a nearest value of q = 0.0505 against a 0.05 threshold.",
+    "B5 is recorded against the upright-posture test; the prone-posture test behaves the same way (p 0.00040 on bins, 0.179 on dogs) and is counted in the family rather than as a separate claim record.",
+    "A5 is recorded as supported in the weak sense that no effect was detected; the check itself is a major finding under S2."
+  ]
 }
